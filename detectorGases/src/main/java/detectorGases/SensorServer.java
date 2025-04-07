@@ -1,6 +1,5 @@
 package detectorGases;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -10,6 +9,7 @@ import java.util.stream.IntStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import detectorGases.entidades.Sensor;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
@@ -18,7 +18,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 
 public class SensorServer extends AbstractVerticle{
 	
-	private Map<Integer, SensorEntities> sensors = new HashMap<Integer, SensorEntities>();
+	private Map<Integer, Sensor> sensors = new HashMap<Integer, Sensor>();
 	private Gson gson;
 
 	public void start(Promise<Void> startFuture) {
@@ -57,27 +57,24 @@ public class SensorServer extends AbstractVerticle{
 	}
 
 	private void getAllWithParams(RoutingContext routingContext) {
-		final String tipo = routingContext.queryParams().contains("name") ? 
+		final String nombre = routingContext.queryParams().contains("name") ? 
+				routingContext.queryParam("name").get(0) : null;
+		final String tipo = routingContext.queryParams().contains("type") ? 
 				routingContext.queryParam("type").get(0) : null;
-		final Long timestamp = Long.valueOf(routingContext.queryParams().contains("surname") ? 
-				routingContext.queryParam("timestamp").get(0) : null);
-		final Float valor = Float.valueOf(routingContext.queryParams().contains("username") ? 
-				routingContext.queryParam("value").get(0) : null);
 		
 		routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
 				.end(gson.toJson(sensors.values().stream().filter(elem -> {
 					boolean res = true;
-					res = res && tipo != null ? elem.getType().equals(tipo) : true;
-					res = res && timestamp != null ? elem.getTimestamp()==timestamp : true;
-					res = res && valor != null ? elem.getValue()==valor : true;
+					res = res && nombre != null ? elem.getNombre().equals(nombre) : true;
+					res = res && tipo != null ? elem.getTipo().equals(tipo) : true;
 					return res;
 				}).collect(Collectors.toList())));
 	}
 
 	private void getOne(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("deviceID"));
+		int id = Integer.parseInt(routingContext.request().getParam("id"));
 		if (sensors.containsKey(id)) {
-			SensorEntities ds = sensors.get(id);
+			Sensor ds = sensors.get(id);
 			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
 					.end(gson.toJson(ds));
 		} else {
@@ -87,16 +84,16 @@ public class SensorServer extends AbstractVerticle{
 	}
 
 	private void addOne(RoutingContext routingContext) {
-		final SensorEntities sensor = gson.fromJson(routingContext.getBodyAsString(), SensorEntities.class);
-		sensors.put(sensor.deviceID, sensor);
+		final Sensor sensor = gson.fromJson(routingContext.getBodyAsString(), Sensor.class);
+		sensors.put(sensor.getIdentificador(), sensor);
 		routingContext.response().setStatusCode(201).putHeader("content-type", "application/json; charset=utf-8")
 				.end(gson.toJson(sensor));
 	}
 
 	private void deleteOne(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("deviceID"));
+		int id = Integer.parseInt(routingContext.request().getParam("id"));
 		if (sensors.containsKey(id)) {
-			SensorEntities user = sensors.get(id);
+			Sensor user = sensors.get(id);
 			sensors.remove(id);
 			routingContext.response().setStatusCode(200).putHeader("content-type", "application/json; charset=utf-8")
 					.end(gson.toJson(user));
@@ -125,8 +122,7 @@ public class SensorServer extends AbstractVerticle{
 		Random rnd = new Random();
 		IntStream.range(0, number).forEach(elem -> {
 			int id = rnd.nextInt();
-			sensors.put(id, new SensorEntities(Calendar.getInstance().getTimeInMillis() + id, (float)100. + id,
-					 "Type_" + id, id));
+			sensors.put(id, new Sensor("Name" + id, "Type" + id, 0+id, 1+id));
 		});
 	}
 	

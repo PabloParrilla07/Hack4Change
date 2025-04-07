@@ -1,7 +1,10 @@
 package detectorGases;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
+import detectorGases.entidades.Sensor;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.client.WebClient;
@@ -18,7 +21,7 @@ public class SensorClient extends AbstractVerticle{
 
 		/* --------------- GET many request --------------- */
 
-		Promise<SensorEntities[]> resList = Promise.promise();
+		Promise<Sensor[]> resList = Promise.promise();
 		resList.future().onComplete(complete -> {
 			if (complete.succeeded()) {
 				System.out.println("GetAll:");
@@ -31,11 +34,11 @@ public class SensorClient extends AbstractVerticle{
 		});
 
 		SensorClientUtil.getRequest(443, "https://67d2c5c590e0670699befc4a.mockapi.io", "api/v1/sensors", 
-				SensorEntities[].class, resList);
+				Sensor[].class, resList);
 
 		/* --------------- GET one request --------------- */
 
-		Promise<SensorEntities> res = Promise.promise();
+		Promise<Sensor> res = Promise.promise();
 		res.future().onComplete(complete -> {
 			if (complete.succeeded()) {
 				System.out.println("GetOne");
@@ -48,11 +51,11 @@ public class SensorClient extends AbstractVerticle{
 	//	restClientUtil.getRequest(443, "https://67d2c5c590e0670699befc4a.mockapi.io", "api/v1/users/1", 
 	//			UserEntity.class, res);
 		SensorClientUtil.getRequest(443, "https://67d2c5c590e0670699befc4a.mockapi.io", "api/v1/sensors/2", 
-				SensorEntities.class, res);
+				Sensor.class, res);
 
 		/* --------------- GET request con parámetros--------------- */
 
-//		Promise<UserEntity> resWithParams = Promise.promise();
+//		Promise<Sensor> resWithParams = Promise.promise();
 //		resWithParams.future().onComplete(complete -> {
 //			if (complete.succeeded()) {
 //				System.out.println("GetOne With params");
@@ -62,15 +65,15 @@ public class SensorClient extends AbstractVerticle{
 //			}
 //		});
 //		Map<String, String> params = new HashMap<String, String>();
-//		params.put("iduser", "3");
-//		params.put("otroparam", "123123");
-//		params.put("otroparam2", "hola");
-//		restClientUtil.getRequestWithParams(443, "https://67d2c5c590e0670699befc4a.mockapi.io", "api/v1/users/1", 
-//				UserEntity.class,
+//		params.put("name1", "type1");
+//		params.put("name3", "type3");
+//		params.put("name7", "type7");
+//		SensorClientUtil.getRequestWithParams(443, "https://67d2c5c590e0670699befc4a.mockapi.io", "api/v1/users/1", 
+//				Sensor.class,
 //				resWithParams, params);
-//
-//		/* --------------- POST request --------------- */
-//
+
+		/* --------------- POST request --------------- */
+
 //		Promise<UserEntity> resPost = Promise.promise();
 //		resPost.future().onComplete(complete -> {
 //			if (complete.succeeded()) {
