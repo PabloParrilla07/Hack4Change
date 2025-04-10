@@ -502,3 +502,139 @@
 2025-04-07 09:23:05,209 [Worker-52: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
 2025-04-07 09:23:05,215 [Worker-52: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2025-04-07 09:23:05,219 [Worker-52: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\test\resources to target\test-classes
+2025-04-10 13:01:48,510 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2025-04-10 13:02:33,967 [Worker-13: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:02:33,967 [Worker-1: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:02:40,652 [Worker-1: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:40,655 [Worker-1: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:02:40,670 [Worker-1: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:40,673 [Worker-1: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:02:42,406 [Worker-16: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:02:42,660 [Worker-2: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:42,663 [Worker-2: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:02:42,695 [Worker-2: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:42,696 [Worker-2: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:02:43,667 [Start Help Server] INFO  org.eclipse.jetty.server.Server - jetty-12.0.15; built: 2024-11-05T19:44:57.623Z; git: 8281ae9740d4b4225e8166cc476bad237c70213a; jvm 21.0.4+8-LTS-274
+2025-04-10 13:02:43,764 [Start Help Server] INFO  o.e.j.server.handler.ContextHandler - Started oeje8n.ContextHandler$CoreContextHandler@6d556974{/help,/help,b=null,a=AVAILABLE,h=oeje8n.ContextHandler$CoreContextHandler$CoreToNestedHandler@75564876{STARTED}}
+2025-04-10 13:02:43,765 [Start Help Server] INFO  o.e.j.s.DefaultSessionIdManager - Session workerName=node0
+2025-04-10 13:02:43,795 [Start Help Server] INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@16b25d2a{HTTP/1.1, (http/1.1)}{127.0.0.1:50634}
+2025-04-10 13:02:43,817 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started oejs.Server@16d93244{STARTING}[12.0.15,sto=0] @68463ms
+2025-04-10 13:02:44,711 [Worker-14: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:44,712 [Worker-14: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:02:44,718 [Worker-14: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:02:44,720 [Worker-14: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:04:11,092 [Worker-17: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:04:11,467 [Worker-17: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vert/vertx-web-client/4.0.3/vertx-web-client-4.0.3.pom
+2025-04-10 13:04:11,479 [Worker-17: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for io.vert:vertx-web-client:jar:4.0.3 is missing, no dependency information available
+2025-04-10 13:04:11,603 [Worker-17: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vert/vertx-web-client/4.0.3/vertx-web-client-4.0.3.jar
+2025-04-10 13:04:11,840 [Worker-17: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:11,841 [Worker-17: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:04:11,849 [Worker-17: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:11,851 [Worker-17: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:04:12,886 [Worker-11: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vert/vertx-web-client/4.0.3/vertx-web-client-4.0.3-sources.jar
+2025-04-10 13:04:12,890 [Worker-11: Download sources and javadoc] ERROR o.e.m.j.internal.DownloadSourcesJob - Could not download sources for io.vert:vertx-web-client:4.0.3
+org.eclipse.core.runtime.CoreException: Could not resolve artifact io.vert:vertx-web-client:jar:sources:4.0.3
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.lambda$7(MavenImpl.java:540)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:458)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:292)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:278)
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:509)
+	at org.eclipse.m2e.core.internal.embedder.MavenImpl.resolve(MavenImpl.java:494)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.download(DownloadSourcesJob.java:308)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadAttachments(DownloadSourcesJob.java:282)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadMaven(DownloadSourcesJob.java:252)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.downloadFilesAndPopulateToUpdate(DownloadSourcesJob.java:220)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.lambda$0(DownloadSourcesJob.java:149)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.executeBare(MavenExecutionContext.java:458)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:339)
+	at org.eclipse.m2e.core.internal.embedder.MavenExecutionContext.execute(MavenExecutionContext.java:278)
+	at org.eclipse.m2e.core.embedder.IMaven.execute(IMaven.java:300)
+	at org.eclipse.m2e.jdt.internal.DownloadSourcesJob.run(DownloadSourcesJob.java:149)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+2025-04-10 13:04:13,809 [Worker-12: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:04:14,233 [Worker-12: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:14,234 [Worker-12: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:04:14,238 [Worker-12: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:14,240 [Worker-12: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:04:16,118 [Worker-6: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:16,120 [Worker-6: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:04:16,124 [Worker-6: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:04:16,126 [Worker-6: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:39:12,023 [Worker-31: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 13:39:12,383 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14.pom
+2025-04-10 13:39:12,438 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14.pom
+2025-04-10 13:39:12,571 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-dependencies/4.5.14/vertx-dependencies-4.5.14.pom
+2025-04-10 13:39:12,695 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-dependencies/4.5.14/vertx-dependencies-4.5.14.pom
+2025-04-10 13:39:13,404 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final.pom
+2025-04-10 13:39:13,477 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final.pom
+2025-04-10 13:39:13,602 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-core/4.5.14/vertx-core-4.5.14.pom
+2025-04-10 13:39:13,925 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-core/4.5.14/vertx-core-4.5.14.pom
+2025-04-10 13:39:14,659 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14.jar
+2025-04-10 13:39:14,803 [Worker-31: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14.jar
+2025-04-10 13:39:14,860 [BasicRepositoryConnector-repo.maven.apache.org-0-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final.jar
+2025-04-10 13:39:15,024 [BasicRepositoryConnector-repo.maven.apache.org-0-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final.jar
+2025-04-10 13:39:15,353 [Worker-31: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:39:15,357 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:39:15,362 [Worker-31: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:39:15,363 [Worker-31: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:39:16,629 [Worker-28: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14-sources.jar
+2025-04-10 13:39:16,731 [Worker-28: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.5.14/vertx-mqtt-4.5.14-sources.jar
+2025-04-10 13:39:16,738 [Worker-28: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.vertx:vertx-mqtt:4.5.14
+2025-04-10 13:39:16,856 [Worker-28: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final-sources.jar
+2025-04-10 13:39:16,962 [Worker-28: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.118.Final/netty-codec-mqtt-4.1.118.Final-sources.jar
+2025-04-10 13:39:16,968 [Worker-28: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.netty:netty-codec-mqtt:4.1.118.Final
+2025-04-10 13:39:17,438 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:39:17,441 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:39:17,448 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:39:17,451 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:42:57,250 [Worker-34: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:42:57,252 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:42:57,258 [Worker-34: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:42:57,261 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:44:08,163 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:44:08,165 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:44:08,170 [Worker-32: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:44:08,171 [Worker-32: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 13:44:32,053 [Worker-34: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:44:32,054 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 13:44:32,058 [Worker-34: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 13:44:32,059 [Worker-34: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:02:10,182 [Worker-44: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\pom.xml.
+2025-04-10 14:02:10,525 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3.pom
+2025-04-10 14:02:10,625 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3.pom
+2025-04-10 14:02:10,757 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final.pom
+2025-04-10 14:02:10,855 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final.pom
+2025-04-10 14:02:11,061 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3.jar
+2025-04-10 14:02:11,393 [Worker-44: Building] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3.jar
+2025-04-10 14:02:11,472 [BasicRepositoryConnector-repo.maven.apache.org-1-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final.jar
+2025-04-10 14:02:11,632 [BasicRepositoryConnector-repo.maven.apache.org-1-0] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final.jar
+2025-04-10 14:02:11,898 [Worker-44: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:11,900 [Worker-44: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:02:11,904 [Worker-44: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:11,905 [Worker-44: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:02:12,962 [Worker-46: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3-sources.jar
+2025-04-10 14:02:13,096 [Worker-46: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/vertx/vertx-mqtt/4.0.3/vertx-mqtt-4.0.3-sources.jar
+2025-04-10 14:02:13,103 [Worker-46: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.vertx:vertx-mqtt:4.0.3
+2025-04-10 14:02:13,244 [Worker-46: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final-sources.jar
+2025-04-10 14:02:13,365 [Worker-46: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/io/netty/netty-codec-mqtt/4.1.60.Final/netty-codec-mqtt-4.1.60.Final-sources.jar
+2025-04-10 14:02:13,373 [Worker-46: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for io.netty:netty-codec-mqtt:4.1.60.Final
+2025-04-10 14:02:13,860 [Worker-42: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:13,861 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:02:13,865 [Worker-42: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:13,867 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:02:29,653 [Worker-44: Launching Mqtt] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:29,655 [Worker-44: Launching Mqtt] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:02:29,658 [Worker-44: Launching Mqtt] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:02:29,659 [Worker-44: Launching Mqtt] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:03:02,027 [Worker-45: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:03:02,028 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:03:02,031 [Worker-45: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:03:02,039 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:04:10,496 [Worker-46: Launching Mqtt] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:04:10,497 [Worker-46: Launching Mqtt] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:04:10,503 [Worker-46: Launching Mqtt] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:04:10,505 [Worker-46: Launching Mqtt] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
+2025-04-10 14:05:07,503 [Worker-46: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:05:07,504 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\main\resources
+2025-04-10 14:05:07,508 [Worker-46: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-04-10 14:05:07,510 [Worker-46: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\isaac\Desktop\Universidad\3\DAD\Hack4Change\Hack4Change\detectorGases\src\test\resources
