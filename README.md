@@ -7,6 +7,5 @@ To do list:
 - Empezar a volcar codigo en la placa para probar sensores
 - Hacer la Base de Datos
 - Montaje(prioridad baja)
-- Pruebas (*ultimo/menos importante*)
-- Solucionar problemas con eclipse y git *prioritario rn*
-
+- Pruebas (**ultimo/menos importante**)
+- Solucionar problemas con eclipse y git **prioritario rn**
