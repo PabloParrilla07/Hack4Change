@@ -1,4 +1,4 @@
-package detectorGases;
+package detectorGases.Rest;
 
 import java.util.stream.Stream;
 
@@ -17,40 +17,24 @@ import io.vertx.mqtt.MqttClientOptions;
 
 public class SensorClient extends AbstractVerticle{
 	
-	public SensorClientUtil SensorClientUtil;
+	public ClientUtil SensorClientUtil;
 	Gson gson;
+	
+	//Aquí es donde se ejecuta el proyecto y se realizan las funciones.
+	//Tenemos dos API REST. La API REST de bajo nivel usa 8080 y la api rest de alto nivel 8081
+	//Desplegar dos vertex, uno para cada nivel.
+	
+	//Cada poco tiempo haremos un post del sensor para ir viendo el nuevo valor
+	//AÑADIMOS SIEMPRE, NO HACEMOS PUT(MODIFICAR), ya que queremos saber el historial de valores.
 
 	public void start(Promise<Void> startFuture) {
 		
 		gson = new Gson();
-		MqttClient mqttClient = MqttClient.create(vertx, new MqttClientOptions().setAutoKeepAlive(true));
-		mqttClient.connect(1883, "localhost", s -> {
-		
-			mqttClient.subscribe("topic_2", MqttQoS.AT_LEAST_ONCE.value(), handler -> {
-				if (handler.succeeded()) {
-					System.out.println("Suscripción " + mqttClient.clientId());
-				}
-			});
 
-			mqttClient.publishHandler(handler -> {
-				System.out.println("Mensaje recibido:");
-				System.out.println("    Topic: " + handler.topicName().toString());
-				System.out.println("    Id del mensaje: " + handler.messageId());
-				System.out.println("    Contenido: " + handler.payload().toString());
-				try {
-				Sensor sc = gson.fromJson(handler.payload().toString(), Sensor.class);
-				System.out.println("    SimpleClass: " + sc.toString());
-				}catch (JsonSyntaxException e) {
-					System.out.println("    No es una SimpleClass. ");
-				}
-			});
-			mqttClient.publish("topic_6", Buffer.buffer("Rico mango"), MqttQoS.AT_LEAST_ONCE, false, false);
-			startFuture.complete();
-		});
 		
 		WebClientOptions options = new WebClientOptions().setUserAgent("RestClientApp/2.0.2.1");
 		options.setKeepAlive(false);
-		SensorClientUtil = new SensorClientUtil(WebClient.create(vertx, options));
+		SensorClientUtil = new ClientUtil(WebClient.create(vertx, options));
 
 		/* --------------- GET many request --------------- */
 

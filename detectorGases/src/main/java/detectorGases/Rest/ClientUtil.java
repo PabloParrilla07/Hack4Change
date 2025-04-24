@@ -1,4 +1,4 @@
-package detectorGases;
+package detectorGases.Rest;
 
 import java.util.Map;
 
@@ -10,13 +10,13 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 
-public class SensorClientUtil {
+public class ClientUtil {
 	public WebClient client;
 	private Gson gson;
 	
 	//TIMESTAMP DE TIPO LONG
 	
-	public SensorClientUtil(WebClient client) {
+	public ClientUtil(WebClient client) {
 		gson = new Gson();
 		this.client = client;
 	}

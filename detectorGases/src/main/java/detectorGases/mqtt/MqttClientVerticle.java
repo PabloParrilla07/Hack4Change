@@ -1,4 +1,4 @@
-package detectorGases;
+package detectorGases.mqtt;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -18,8 +18,8 @@ public class MqttClientVerticle extends AbstractVerticle {
 	public void start(Promise<Void> startFuture) {
 		gson = new Gson();
 		MqttClient mqttClient = MqttClient.create(vertx, new MqttClientOptions().setAutoKeepAlive(true));
-		mqttClient.connect(1883, "192.168.184.42", s -> {
-
+		mqttClient.connect(1883, "localhost", s -> {
+		
 			mqttClient.subscribe("topic_2", MqttQoS.AT_LEAST_ONCE.value(), handler -> {
 				if (handler.succeeded()) {
 					System.out.println("Suscripción " + mqttClient.clientId());
@@ -38,7 +38,8 @@ public class MqttClientVerticle extends AbstractVerticle {
 					System.out.println("    No es una SimpleClass. ");
 				}
 			});
-			mqttClient.publish("topic_6", Buffer.buffer("Rico mango"), MqttQoS.AT_LEAST_ONCE, false, false);
+			mqttClient.publish("topic_1", Buffer.buffer("Ejemplo"), MqttQoS.AT_LEAST_ONCE, false, false);
+			startFuture.complete();
 		});
 
 	}
