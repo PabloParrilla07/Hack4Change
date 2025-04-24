@@ -1,23 +1,40 @@
-package detectorGases;
+package detectorGases.Rest;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import detectorGases.entidades.Sensor;
+import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
+import io.vertx.mqtt.MqttClient;
+import io.vertx.mqtt.MqttClientOptions;
 
 public class SensorClient extends AbstractVerticle{
 	
-	public SensorClientUtil SensorClientUtil;
+	public ClientUtil SensorClientUtil;
+	Gson gson;
+	
+	//Aquí es donde se ejecuta el proyecto y se realizan las funciones.
+	//Tenemos dos API REST. La API REST de bajo nivel usa 8080 y la api rest de alto nivel 8081
+	//Desplegar dos vertex, uno para cada nivel.
+	
+	//Cada poco tiempo haremos un post del sensor para ir viendo el nuevo valor
+	//AÑADIMOS SIEMPRE, NO HACEMOS PUT(MODIFICAR), ya que queremos saber el historial de valores.
 
 	public void start(Promise<Void> startFuture) {
+		
+		gson = new Gson();
+
+		
 		WebClientOptions options = new WebClientOptions().setUserAgent("RestClientApp/2.0.2.1");
 		options.setKeepAlive(false);
-		SensorClientUtil = new SensorClientUtil(WebClient.create(vertx, options));
+		SensorClientUtil = new ClientUtil(WebClient.create(vertx, options));
 
 		/* --------------- GET many request --------------- */
 
