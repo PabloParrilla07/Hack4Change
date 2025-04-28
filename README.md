@@ -10,6 +10,9 @@ To do list:
 - Pruebas (**ultimo/menos importante**)
 - Solucionar problemas con eclipse y git **prioritario rn**
 
+Contraseña BDD:
+usuario -> p4c0gu4p0
+
 LO QUE HE ENTENDIDO DE LA API REST:
 -ESTRUCTURA:
   detectorDeGases
