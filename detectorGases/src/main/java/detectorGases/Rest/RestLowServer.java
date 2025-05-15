@@ -42,7 +42,7 @@ public class RestLowServer extends AbstractVerticle{
 		createSomeValues(50);
 		createSomeGroups(1);
 		createSomeDevices(2);
-		createSomeActuador(1);
+		createSomeActuadors(1);
 		createSomeActuadorStates(20);
 
 		//FORMATO DE LA FECHA
@@ -386,7 +386,7 @@ public class RestLowServer extends AbstractVerticle{
 		});
 	}
 	
-	private void createSomeActuador(int number) {
+	private void createSomeActuadors(int number) {
 		Random rnd = new Random();
 		IntStream.range(0, number).forEach(elem -> {
 			int id = rnd.nextInt();
