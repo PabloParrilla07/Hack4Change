@@ -2,6 +2,8 @@ package detectorGases.Rest;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,12 +38,12 @@ public class RestLowServer extends AbstractVerticle{
 	public void start(Promise<Void> startFuture) {
 		
 		//CREACIÓN DE DATOS FICTICIOS
-//		createSomeSensors(9);
-//		createSomeValues(50);
-//		createSomeGroups(1);
-//		createSomeDevices(2);
-//		createSomeActuador(1);
-//		createSomeActuadorStates(20);
+		createSomeSensors(9);
+		createSomeValues(50);
+		createSomeGroups(1);
+		createSomeDevices(2);
+		createSomeActuador(1);
+		createSomeActuadorStates(20);
 
 		//FORMATO DE LA FECHA
 		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -352,12 +354,53 @@ public class RestLowServer extends AbstractVerticle{
 	
 	//FUNCIONES DE CREACION DE DATOS
 	
-//	private void createSomeSensors(int number) {
-//		Random rnd = new Random();
-//		IntStream.range(0, number).forEach(elem -> {
-//			int id = rnd.nextInt();
-//			sensors.put(id, new Sensor("Name" + id, "Type" + id, 0+id, 1+id));
-//		});
-//	}
+	private void createSomeSensors(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			sensors.put(id, new Sensor("Name" + id, "Type" + id, 0+id, 1+id));
+		});
+	}
+	
+	private void createSomeValues(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			values.put(id, new SensorValue(0 + id, 0 + id, (float)0+id, (long)0+id));
+		});
+	}
+	
+	private void createSomeGroups(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			groups.put(id, new Grupo(0 + id, "CanalMqtt" + id, "nombreGrupo" + id));
+		});
+	}
+	
+	private void createSomeDevices(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			devices.put(id, new Dispositivo(0 + id, "NombreDisp" + id, 0 + id));
+		});
+	}
+	
+	private void createSomeActuador(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			actuadores.put(id, new Actuador(0 + id, "NombreActuador" + id, "TipoActuador" + id, 0 + id));
+		});
+	}
+	
+	private void createSomeActuadorStates(int number) {
+		Random rnd = new Random();
+		IntStream.range(0, number).forEach(elem -> {
+			int id = rnd.nextInt();
+			states.put(id, new ActuadorState(0 + id, 0 + id, Math.random() < 0.5, (long) 0 + id));
+		});
+	}
+	
 		
 }
