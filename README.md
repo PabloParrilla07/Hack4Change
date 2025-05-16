@@ -11,7 +11,8 @@ To do list:
 - Solucionar problemas con eclipse y git **prioritario rn**
 
 Contraseña BDD:
-usuario -> p4c0gu4p0
+usuario -> IoTAmaso
+contraseña -> I0t34m4s0
 
 LO QUE HE ENTENDIDO DE LA API REST:
 -ESTRUCTURA:
