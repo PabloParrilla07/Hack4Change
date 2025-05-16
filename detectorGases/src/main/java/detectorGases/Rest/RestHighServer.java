@@ -37,11 +37,11 @@ public class RestHighServer extends AbstractVerticle{
 		//PARTE DE MQTT
 
 		//CREAMOS EL CLIENTE MQTT
-		MqttClient mqttClient = MqttClient.create(vertx, new MqttClientOptions().setAutoKeepAlive(true));
+		mqttClient = MqttClient.create(vertx, new MqttClientOptions().setAutoKeepAlive(true));
 		
 		
 		//LO CONECTAMOS AL BROKER
-		mqttClient.connect(1883, "192.168.46.42", s -> {
+		mqttClient.connect(1883, "localhost", s -> {
 			if(s.succeeded()) {
 				System.out.println("Conectado al Broker MQTT");
 			
@@ -89,7 +89,7 @@ public class RestHighServer extends AbstractVerticle{
             }
 
             // Reenviar el valor al servidor de bajo nivel
-            webClient.post(8080, "192.168.46.42", "/api/values")
+            webClient.post(8080, "localhost", "/api/values")
                     .sendBuffer(Buffer.buffer(gson.toJson(value)), res -> {
                         if (res.succeeded()) {
                         	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
