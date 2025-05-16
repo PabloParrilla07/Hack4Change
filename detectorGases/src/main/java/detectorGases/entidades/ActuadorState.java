@@ -4,41 +4,41 @@ public class ActuadorState {
 	//id (PK), id_actuador (FK), estado (boolean), timestamp
 	//(datetime)
 
-	protected Integer id; //(PK)
-	protected Integer id_actuador; //(FK)
-	protected Boolean estado; //¿Encendido o apagado?
+	protected Integer actuadorStateId; //(PK)
+	protected Integer actuadorId; //(FK)
+	protected Boolean state; //¿Encendido o apagado?
 	protected Long timestamp;
 	
 	public ActuadorState(Integer id, Integer id_actuador, Boolean estado, Long timestamp) {
 		super();
-		this.id = id;
-		this.id_actuador = id_actuador;
-		this.estado = estado;
+		this.actuadorStateId = id;
+		this.actuadorId = id_actuador;
+		this.state = estado;
 		this.timestamp = timestamp;
 	}
 
 	public Integer getId() {
-		return id;
+		return actuadorStateId;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.actuadorStateId = id;
 	}
 
 	public Integer getId_actuador() {
-		return id_actuador;
+		return actuadorId;
 	}
 
 	public void setId_actuador(Integer id_actuador) {
-		this.id_actuador = id_actuador;
+		this.actuadorId = id_actuador;
 	}
 
 	public Boolean getEstado() {
-		return estado;
+		return state;
 	}
 
 	public void setEstado(Boolean estado) {
-		this.estado = estado;
+		this.state = estado;
 	}
 
 	public Long getTimestamp() {

@@ -2,23 +2,23 @@ package detectorGases.entidades;
 
 public class Grupo {
 
-	protected int id;
+	protected int grupoId;
 	protected String canal_mqtt;
-	protected String nombre;
+	protected String name;
 	
 	public Grupo(int id, String canal_mqtt, String nombre) {
 		super();
-		this.id = id;
+		this.grupoId = id;
 		this.canal_mqtt = canal_mqtt;
-		this.nombre = nombre;
+		this.name = nombre;
 	}
 
 	public int getId() {
-		return id;
+		return grupoId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.grupoId = id;
 	}
 
 	public String getCanal_mqtt() {
@@ -30,11 +30,11 @@ public class Grupo {
 	}
 
 	public String getNombre() {
-		return nombre;
+		return name;
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.name = nombre;
 	}
 	
 	

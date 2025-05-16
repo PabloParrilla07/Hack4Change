@@ -10,48 +10,48 @@ public class Sensor{
 		//-Una sola clase sensors
 		//-Una sola clase sensors, y una para cada sensor usando herencia.
 
-	protected String nombre;
-	protected String tipo;
-	protected int id;//(PK)
+	protected String name;
+	protected String type;
+	protected int sensorId;//(PK)
 	protected int deviceID; //(FK) Id de la esp32 a las que estas conectado
 
 		
 	public Sensor(String nombre, String tipo, int identificador, int deviceID) {
 		super();
-		this.nombre = nombre;
-		this.tipo = tipo;
-		this.id = identificador;
+		this.name = nombre;
+		this.type = tipo;
+		this.sensorId = identificador;
 		this.deviceID = deviceID;
 	}
 
 
 	public String getNombre() {
-		return nombre;
+		return name;
 	}
 
 
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.name = nombre;
 	}
 
 
 	public String getTipo() {
-		return tipo;
+		return type;
 	}
 
 
 	public void setTipo(String tipo) {
-		this.tipo = tipo;
+		this.type = tipo;
 	}
 
 
 	public int getIdentificador() {
-		return id;
+		return sensorId;
 	}
 
 
 	public void setIdentificador(int identificador) {
-		this.id = identificador;
+		this.sensorId = identificador;
 	}
 
 
@@ -67,7 +67,7 @@ public class Sensor{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(deviceID, id, nombre, tipo);
+		return Objects.hash(deviceID, sensorId, name, type);
 	}
 
 
@@ -80,14 +80,14 @@ public class Sensor{
 		if (getClass() != obj.getClass())
 			return false;
 		Sensor other = (Sensor) obj;
-		return deviceID == other.deviceID && id == other.id
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(tipo, other.tipo);
+		return deviceID == other.deviceID && sensorId == other.sensorId
+				&& Objects.equals(name, other.name) && Objects.equals(type, other.type);
 	}
 
 
 	@Override
 	public String toString() {
-		return "Sensor [nombre=" + nombre + ", tipo=" + tipo + ", identificador=" + id + ", deviceID="
+		return "Sensor [nombre=" + name + ", tipo=" + type + ", identificador=" + sensorId + ", deviceID="
 				+ deviceID + "]";
 	}
 	

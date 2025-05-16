@@ -6,8 +6,8 @@ public class SensorPMS {
 	
 	//Nos interesa sacar el PM1 y el PM2.5
 	
-	protected Integer Id;//(PK)
-	protected Integer IdSensor;//(FK) Id de la clase "Sensor"
+	protected Integer sensorPMSId;//(PK)
+	protected Integer sensorId;//(FK) Id de la clase "Sensor"
 	protected Float valuePM10;
 	protected Float valuePM1;
 	protected Float valuePM25;
@@ -15,8 +15,8 @@ public class SensorPMS {
 	
 	public SensorPMS(Integer id, Integer IdSensor, Float valuePM10, Float valuePM1, Float valuePM25, Long timestamp) {
 		super();
-		this.Id = id;
-		this.IdSensor=IdSensor;
+		this.sensorPMSId = id;
+		this.sensorId=IdSensor;
 		this.valuePM10 = valuePM10;
 		this.valuePM1 = valuePM1;
 		this.valuePM25 = valuePM25;
@@ -25,19 +25,19 @@ public class SensorPMS {
 	}
 
 	public Integer getId() {
-		return Id;
+		return sensorPMSId;
 	}
 
 	public void setId(Integer id) {
-		Id = id;
+		sensorPMSId = id;
 	}
 
 	public Integer getIdSensor() {
-		return IdSensor;
+		return sensorId;
 	}
 
 	public void setIdSensor(Integer idSensor) {
-		IdSensor = idSensor;
+		sensorId = idSensor;
 	}
 
 	public Float getValuePM10() {
@@ -74,7 +74,7 @@ public class SensorPMS {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Id, IdSensor, timestamp, valuePM1, valuePM10, valuePM25);
+		return Objects.hash(sensorPMSId, sensorId, timestamp, valuePM1, valuePM10, valuePM25);
 	}
 
 	@Override
@@ -86,14 +86,14 @@ public class SensorPMS {
 		if (getClass() != obj.getClass())
 			return false;
 		SensorPMS other = (SensorPMS) obj;
-		return Objects.equals(Id, other.Id) && Objects.equals(IdSensor, other.IdSensor)
+		return Objects.equals(sensorPMSId, other.sensorPMSId) && Objects.equals(sensorId, other.sensorId)
 				&& Objects.equals(timestamp, other.timestamp) && Objects.equals(valuePM1, other.valuePM1)
 				&& Objects.equals(valuePM10, other.valuePM10) && Objects.equals(valuePM25, other.valuePM25);
 	}
 
 	@Override
 	public String toString() {
-		return "SensorPMS [Id=" + Id + ", IdSensor=" + IdSensor + ", valuePM10=" + valuePM10 + ", valuePM1=" + valuePM1
+		return "SensorPMS [Id=" + sensorPMSId + ", IdSensor=" + sensorId + ", valuePM10=" + valuePM10 + ", valuePM1=" + valuePM1
 				+ ", valuePM25=" + valuePM25 + ", timestamp=" + timestamp + "]";
 	}
 
