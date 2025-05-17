@@ -2,25 +2,25 @@ package detectorGases.entidades;
 
 public class Actuador {
 	
-	protected Integer id; //(PK)
+	protected Integer actuadorId; //(PK)
 	protected String name;
 	protected String type;
-	protected Integer deviceID;//(FK)
+	protected Integer dispositivoId;//(FK)
 	
 	public Actuador(Integer id, String name, String type, Integer deviceID) {
 		super();
-		this.id = id;
+		this.actuadorId = id;
 		this.name = name;
 		this.type = type;
-		this.deviceID = deviceID;
+		this.dispositivoId = deviceID;
 	}
 	
 	public Integer getId() {
-		return id;
+		return actuadorId;
 	}
 	
 	public void setId(Integer id) {
-		this.id = id;
+		this.actuadorId = id;
 	}
 	
 	public String getName() {
@@ -40,11 +40,11 @@ public class Actuador {
 	}
 	
 	public Integer getDeviceID() {
-		return deviceID;
+		return dispositivoId;
 	}
 	
 	public void setDeviceID(Integer deviceID) {
-		this.deviceID = deviceID;
+		this.dispositivoId = deviceID;
 	}
 
 }

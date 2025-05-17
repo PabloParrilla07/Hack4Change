@@ -20,6 +20,16 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
+import io.vertx.core.Future;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.mysqlclient.MySQLClient;
+import io.vertx.mysqlclient.MySQLConnectOptions;
+import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.Row;
+import io.vertx.sqlclient.RowSet;
+
 public class RestLowServer extends AbstractVerticle{
 	
 	//Aquí van los métodos que usaremos para acceder/modificar la base de datos.
@@ -403,4 +413,6 @@ public class RestLowServer extends AbstractVerticle{
 	}
 	
 		
+
+	
 }
