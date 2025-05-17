@@ -10,11 +10,11 @@ int test_delay = 1000; // so we don't spam the API
 boolean describe_tests = true;
 
 // Replace 0.0.0.0 by your server local IP (ipconfig [windows] or ifconfig [Linux o MacOS] gets IP assigned to your PC)
-String serverName = "http://192.168.1.178/";
+String serverName = "localhost";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
-#define STASSID "Your_Wifi_SSID"    //"Your_Wifi_SSID"
+#define STASSID ""    //"Your_Wifi_SSID"
 #define STAPSK "Your_Wifi_PASSWORD" //"Your_Wifi_PASSWORD"
 
 // MQTT configuration
@@ -22,7 +22,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // Server IP, where de MQTT broker is deployed
-const char *MQTT_BROKER_ADRESS = "192.168.1.154";
+const char *MQTT_BROKER_ADRESS = "localhost";
 const uint16_t MQTT_PORT = 1883;
 
 // Name for this MQTT client
@@ -95,8 +95,8 @@ void ConnectMqtt()
   Serial.print("Starting MQTT connection...");
   if (client.connect(MQTT_CLIENT_NAME))
   {
-    client.subscribe("hello/world");
-    client.publish("hello/world", "connected");
+    client.subscribe("esp32/actuador/oled");
+    client.publish("esp32/actuador/oled", "connected");
   }
   else
   {
