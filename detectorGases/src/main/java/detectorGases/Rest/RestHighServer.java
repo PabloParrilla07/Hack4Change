@@ -21,7 +21,8 @@ public class RestHighServer extends AbstractVerticle{
 	private MqttClient mqttClient;
 	
 	//NOMBRE DEL TOPIC
-	String topic = "esp32/actuador/OLED";
+	String act1 = "esp32/actuador/OLED";
+	String act2 = "esp32/actuador/BOCINA";
 	
 	//FUNCIONES DEL RESTHIGHSERVER: -PUBLICA TOPICS
 	//							    -ENVÍA DATOS AL SERVIDOR BAJO NIVEL
@@ -57,7 +58,7 @@ public class RestHighServer extends AbstractVerticle{
 		router.route("/api/values*").handler(BodyHandler.create());
 		//Qué significa esta línea?
 		//Cuando la esp32 haga un POST, realizará la función que se esta declarando
-		router.post("/api/values").handler(this::handleSensorValuePost);
+		router.post("/api/values").handler(this::accionValuePost);
 
 		// Handling any server startup result
 		vertx.createHttpServer().requestHandler(router::handle).listen(8080, result -> {
@@ -70,22 +71,70 @@ public class RestHighServer extends AbstractVerticle{
 
 	}
 	
-	private void handleSensorValuePost(RoutingContext routingContext) {
+	private void accionValuePost(RoutingContext routingContext) {
 		try {
 			
 			//CONVERTIMOS EL JSON QUE NOS DA LA ESP32 EN UN TIPO SENSOR VALUE
             SensorValue value = gson.fromJson(routingContext.getBodyAsString(), SensorValue.class);
             System.out.println("Valor del sensor: " + value);
-
-            // USO DE LA LÓGICA(se que no es 500 es un valor predeterminado)
-            if (value.getValue()> 500) {
-                mqttClient.publish(topic, Buffer.buffer("ON"),
+            
+            //Esto se puede ir cambiando, por ahora así.
+            
+            int mq2ID=0;
+            int mq9ID=1;
+            int micsID=2;
+            int pmsID=3;
+            int maxID=4;
+            
+            // USO DE LA LÓGICA
+            //MQ2 --> < 2 
+            //MQ9 --> >35
+            //MICS --> >1.5V
+            //PMS -->  >25 o 50 depende de cual usemos
+            //MAX -->  >800
+            
+            
+            if (value.getIdSensor().equals(mq2ID) && value.getValue()< 2) {
+                mqttClient.publish(act1, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla ON");
-            } else {
-                mqttClient.publish(topic, Buffer.buffer("OFF"),
+                mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("📡 Pantalla OFF");
+                System.out.println("Pantalla y Bocina ON");
+            } 
+            else if(value.getIdSensor().equals(mq9ID) && value.getValue()>35){
+                mqttClient.publish(act1, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Pantalla y Bocina ON");
+            }
+            else if(value.getIdSensor().equals(micsID) && value.getValue() > 1.5){
+                mqttClient.publish(act1, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Pantalla y Bocina ON");
+            }
+            else if(value.getIdSensor().equals(pmsID) && value.getValue() >50) {
+                mqttClient.publish(act1, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Pantalla y Bocina ON");
+            }
+            else if(value.getIdSensor().equals(maxID) && value.getValue() > 800){
+                mqttClient.publish(act1, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Pantalla y Bocina ON");
+            }
+            else {
+                mqttClient.publish(act1, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Pantalla y Bocina OFF");
             }
 
             // Reenviar el valor al servidor de bajo nivel
