@@ -7,6 +7,7 @@ import detectorGases.entidades.Grupo;
 import detectorGases.entidades.Sensor;
 import detectorGases.entidades.SensorPMS;
 import detectorGases.entidades.SensorValue;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;
@@ -25,7 +26,7 @@ public class FuncionesBBDD extends AbstractVerticle{
 	@Override
 	public void start(Promise<Void> startFuture) {
 	MySQLConnectOptions connectOptions = new MySQLConnectOptions().setPort(1883).setHost("127.0.0.1")
-			.setDatabase("IoTAmaso").setUser("IoTAmaso").setPassword("I0T4m4s0");
+			.setDatabase("IoTAmaso").setUser("IoTAmaso").setPassword("I0t4m4s0");
 	
 	PoolOptions poolOptions = new PoolOptions().setMaxSize(10);
 	

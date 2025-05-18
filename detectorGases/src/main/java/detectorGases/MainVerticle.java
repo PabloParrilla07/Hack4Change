@@ -11,6 +11,7 @@ public class MainVerticle extends AbstractVerticle{
 	public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new MainVerticle());
+        vertx.deployVerticle(new FuncionesBBDD());
     }
 	
 	public void start() {
