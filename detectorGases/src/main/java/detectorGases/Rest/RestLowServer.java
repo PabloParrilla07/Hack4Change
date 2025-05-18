@@ -1,5 +1,6 @@
 package detectorGases.Rest;
 
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -33,7 +34,7 @@ import io.vertx.sqlclient.RowSet;
 public class RestLowServer extends AbstractVerticle{
 	
 	//Aquí van los métodos que usaremos para acceder/modificar la base de datos.
-	
+	MySQLPool mySqlClient;
 	
 	//MAPA PARA CADA ENTIDAD CREADA. REUNIÓN DE DATOS
 	private Map<Integer, Sensor> sensors = new HashMap<Integer, Sensor>();
@@ -117,20 +118,75 @@ public class RestLowServer extends AbstractVerticle{
 	//SENSOR
 	
 	private void getAllSensors(RoutingContext routingContext) {
-		routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-				.end(gson.toJson(sensors.values()));
+	    mySqlClient
+	        .preparedQuery("SELECT * FROM Sensor;")
+	        .execute(ar -> {
+	            if (ar.succeeded()) {
+	                RowSet<Row> resultSet = ar.result();
+	                JsonArray result = new JsonArray();
+	                for (Row row : resultSet) {
+	                    result.add(JsonObject.mapFrom(new Sensor(
+	                    		row.getString("type"),
+								row.getString("name"),
+								row.getInteger("sensorId"),
+								row.getInteger("dispositivoId")
+	                    )));
+	                }
+
+	                if (result.isEmpty()) {
+	                    routingContext.response()
+	                        .putHeader("content-type", "application/json; charset=utf-8")
+	                        .setStatusCode(404)
+	                        .end("No se encontraron sensores");
+	                } else {
+	                    routingContext.response()
+	                        .putHeader("content-type", "application/json; charset=utf-8")
+	                        .setStatusCode(200)
+	                        .end(result.encode());
+	                }
+	            } else {
+	                routingContext.response()
+	                    .putHeader("content-type", "application/json; charset=utf-8")
+	                    .setStatusCode(500)
+	                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+	            }
+	        });
 	}
 
 	private void getOneSensor(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id"));
-		if (sensors.containsKey(id)) {
-			Sensor ds = sensors.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+	    mySqlClient
+        .preparedQuery("SELECT * FROM Sensor LIMIT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Sensor(
+                    		row.getString("type"),
+							row.getString("name"),
+							row.getInteger("sensorId"),
+							row.getInteger("dispositivoId")
+                    )));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron sensores");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneSensor(RoutingContext routingContext) {
@@ -170,15 +226,39 @@ public class RestLowServer extends AbstractVerticle{
 	//VALORES
 	
 	private void getOneValue(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id_sensor"));
-		if (sensors.containsKey(id)) {
-			SensorValue ds = values.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+		mySqlClient
+        .preparedQuery("SELECT * FROM SensorValue LIMIT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new SensorValue(
+                    		row.getInteger("sensorValueId"),
+							row.getInteger("sensorId"),
+							row.getFloat("value"),
+							row.getLong("timestamp")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron valroes");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneValue(RoutingContext routingContext) {
@@ -191,20 +271,73 @@ public class RestLowServer extends AbstractVerticle{
 	//ACTUADORES
 	
 	private void getAllActuators(RoutingContext routingContext) {
-		routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-				.end(gson.toJson(actuadores.values()));
+		mySqlClient
+        .preparedQuery("SELECT * FROM Actuador;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Actuador(
+                    		row.getInteger("actuadorId"),
+							row.getString("name"),
+							row.getString("type"),
+							row.getInteger("dispositivoId"))));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron actuadores");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void getOneActuator(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id"));
-		if (actuadores.containsKey(id)) {
-			Actuador ds = actuadores.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+		mySqlClient
+        .preparedQuery("SELECT * FROM Actuador LIMIT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Actuador(
+                    		row.getInteger("actuadorId"),
+							row.getString("name"),
+							row.getString("type"),
+							row.getInteger("dispositivoId"))));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron actuadores");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneActuator(RoutingContext routingContext) {
@@ -242,15 +375,39 @@ public class RestLowServer extends AbstractVerticle{
 	//ESTADOS DE LOS ACTUADORES
 	
 	private void getOneState(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id_sensor"));
-		if (states.containsKey(id)) {
-			ActuadorState ds = states.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+		mySqlClient
+        .preparedQuery("SELECT * FROM ActuadorState LIMT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new ActuadorState(
+                    		row.getInteger("actuadorStateId"),
+							row.getInteger("actuadorId"),
+							row.getBoolean("state"),
+							row.getLong("timestamp")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron estados");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneState(RoutingContext routingContext) {
@@ -263,20 +420,73 @@ public class RestLowServer extends AbstractVerticle{
 	//DISPOSITIVOS
 	
 	private void getAllDevices(RoutingContext routingContext) {
-		routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-				.end(gson.toJson(devices.values()));
+		mySqlClient
+        .preparedQuery("SELECT * FROM Dispositivo;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Dispositivo(
+                    		row.getInteger("dispositivoId"),
+							row.getString("name"),
+							row.getInteger("grupoId")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron dispositivos");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void getOneDevice(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id"));
-		if (devices.containsKey(id)) {
-			Dispositivo ds = devices.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+		mySqlClient
+        .preparedQuery("SELECT * FROM Dispositivo LIMIT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Dispositivo(
+                    		row.getInteger("dispositivoId"),
+							row.getString("name"),
+							row.getInteger("grupoId")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron dispositivos");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneDevice(RoutingContext routingContext) {
@@ -314,20 +524,73 @@ public class RestLowServer extends AbstractVerticle{
 	//GRUPOS
 	
 	private void getAllGroups(RoutingContext routingContext) {
-		routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-				.end(gson.toJson(groups.values()));
+		mySqlClient
+        .preparedQuery("SELECT * FROM Grupo;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Grupo(
+                    		row.getInteger("grupoId"),
+							row.getString("canalMQTT"),
+							row.getString("name")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron grupos");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void getOneGroup(RoutingContext routingContext) {
-		int id = Integer.parseInt(routingContext.request().getParam("id"));
-		if (groups.containsKey(id)) {
-			Grupo ds = groups.get(id);
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(200)
-					.end(gson.toJson(ds));
-		} else {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8").setStatusCode(204)
-					.end();
-		}
+		mySqlClient
+        .preparedQuery("SELECT * FROM Grupo LIMIT 1;")
+        .execute(ar -> {
+            if (ar.succeeded()) {
+                RowSet<Row> resultSet = ar.result();
+                JsonArray result = new JsonArray();
+                for (Row row : resultSet) {
+                    result.add(JsonObject.mapFrom(new Grupo(
+                    		row.getInteger("grupoId"),
+							row.getString("canalMQTT"),
+							row.getString("name")
+							)));
+                }
+
+                if (result.isEmpty()) {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(404)
+                        .end("No se encontraron grupos");
+                } else {
+                    routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .setStatusCode(200)
+                        .end(result.encode());
+                }
+            } else {
+                routingContext.response()
+                    .putHeader("content-type", "application/json; charset=utf-8")
+                    .setStatusCode(500)
+                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
+            }
+        });
 	}
 
 	private void addOneGroup(RoutingContext routingContext) {
