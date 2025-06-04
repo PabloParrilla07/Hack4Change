@@ -1,6 +1,8 @@
 package detectorGases.Rest;
 
 import com.google.gson.Gson;
+
+import detectorGases.entidades.ActuadorState;
 import detectorGases.entidades.SensorValue;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
@@ -56,9 +58,11 @@ public class RestHighServer extends AbstractVerticle{
 		//AQUÍ RECIBE DE LA ESP32
 		Router router = Router.router(vertx);
 		router.route("/api/values*").handler(BodyHandler.create());
+		router.route("/api/states*").handler(BodyHandler.create());
 		//Qué significa esta línea?
 		//Cuando la esp32 haga un POST, realizará la función que se esta declarando
 		router.post("/api/values").handler(this::accionValuePost);
+		router.route("/api/states").handler(this::accionStatePost);
 
 		// Handling any server startup result
 		vertx.createHttpServer().requestHandler(router::handle).listen(8080, result -> {
@@ -80,11 +84,12 @@ public class RestHighServer extends AbstractVerticle{
             
             //Esto se puede ir cambiando, por ahora así.
             
-            int mq2ID=0;
-            int mq9ID=1;
-            int micsID=2;
-            int pmsID=3;
-            int maxID=4;
+            int mq9CH4=0;
+            int mq9C0=1;
+            int mq9GLP=2;
+            
+            //Sensores realmente
+             
             
             // USO DE LA LÓGICA
             //MQ2 --> < 2 
@@ -93,50 +98,40 @@ public class RestHighServer extends AbstractVerticle{
             //PMS -->  >25 o 50 depende de cual usemos
             //MAX -->  >800
             
+            String oledMessage = "";
+            if (value.getIdSensor().equals(mq9CH4)) oledMessage += "CH4: " + value.getValue() + "\n";
+            if (value.getIdSensor().equals(mq9C0)) oledMessage += "CO: " + value.getValue() + "\n";
+            if (value.getIdSensor().equals(mq9GLP)) oledMessage += "GLP: " + value.getValue() + "\n";
+
             
-            if (value.getIdSensor().equals(mq2ID) && value.getValue()< 2) {
-                mqttClient.publish(act1, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
+            mqttClient.publish(act1, Buffer.buffer(oledMessage),
+                    MqttQoS.AT_LEAST_ONCE, false, false);
+
+            
+            
+            if(value.getIdSensor().equals(mq9CH4) && value.getValue()>2000){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina ON");
-            } 
-            else if(value.getIdSensor().equals(mq9ID) && value.getValue()>35){
-                mqttClient.publish(act1, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
-                mqttClient.publish(act2, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina ON");
+                System.out.println("Bocina ON");
             }
-            else if(value.getIdSensor().equals(micsID) && value.getValue() > 1.5){
-                mqttClient.publish(act1, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
+            else if(value.getIdSensor().equals(mq9C0) && value.getValue() > 450){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina ON");
+                System.out.println("Bocina ON");
             }
-            else if(value.getIdSensor().equals(pmsID) && value.getValue() >50) {
-                mqttClient.publish(act1, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
+            else if(value.getIdSensor().equals(mq9GLP) && value.getValue() > 450){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina ON");
-            }
-            else if(value.getIdSensor().equals(maxID) && value.getValue() > 800){
-                mqttClient.publish(act1, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
-                mqttClient.publish(act2, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina ON");
+                System.out.println("Bocina ON");
             }
             else {
-                mqttClient.publish(act1, Buffer.buffer("ON"),
+                mqttClient.publish(act2, Buffer.buffer("OFF"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
-                mqttClient.publish(act2, Buffer.buffer("ON"),
-                        MqttQoS.AT_LEAST_ONCE, false, false);
-                System.out.println("Pantalla y Bocina OFF");
+                System.out.println("Bocina OFF");
             }
-
+            
+            System.out.println("Mensaje OLED publicado:\n" + oledMessage);
+            
             // Reenviar el valor al servidor de bajo nivel
             webClient.post(8080, "localhost", "/api/values")
                     .sendBuffer(Buffer.buffer(gson.toJson(value)), res -> {
@@ -152,5 +147,21 @@ public class RestHighServer extends AbstractVerticle{
         }
     }
 
+	private void accionStatePost(RoutingContext routingContext) {
+		try {
+			
+			ActuadorState state = gson.fromJson(routingContext.getBodyAsString(), ActuadorState.class);
+			webClient.post(8080, "localhost", "/api/states")
+            .sendBuffer(Buffer.buffer(gson.toJson(state)), res -> {
+                if (res.succeeded()) {
+                	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
+                } else {
+                	routingContext.response().setStatusCode(500).end("Error reenviando a servidor bajo nivel");
+                }
+            });
+		} catch (Exception e) {
+        	routingContext.response().setStatusCode(400).end("JSON malformado");
+        }
+	}
 	
 }
