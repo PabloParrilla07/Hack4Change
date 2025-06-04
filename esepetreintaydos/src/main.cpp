@@ -2,15 +2,22 @@
 #include "ArduinoJson.h"
 #include <WiFiUdp.h>
 #include <PubSubClient.h>
+#include <MQSpaceData.h>
+#define MQ9_PIN 36 
+float co=0.0;
+float ch4 = 0.0;
+float lpg = 0.0;
 
+
+MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
-const int DEVICE_ID = 124;
+const int DEVICE_ID = 0;
 
 int test_delay = 1000; // so we don't spam the API
 boolean describe_tests = true;
 
 // Replace 0.0.0.0 by your server local IP (ipconfig [windows] or ifconfig [Linux o MacOS] gets IP assigned to your PC)
-String serverName = "localhost9";
+String serverName = "RestHighLevelClient";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
@@ -26,7 +33,7 @@ const char *MQTT_BROKER_ADRESS = "localhost";
 const uint16_t MQTT_PORT = 1883;
 
 // Name for this MQTT client
-const char *MQTT_CLIENT_NAME = "ArduinoClient_1";
+const char *MQTT_CLIENT_NAME = "ArduinoClient_0";
 
 // callback a ejecutar cuando se recibe un mensaje
 // en este ejemplo, muestra por serial el mensaje recibido
@@ -43,7 +50,11 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   }
   Serial.print(content);
   Serial.println();
-
+  if(topic=="esp32/actuador/OLED"){
+    Serial.println("ble ble ble");
+  }else if(topic=="esp32/actuador/BOCINA"){
+    Serial.println("bla bla bla");
+  }
   
 }
 
@@ -65,7 +76,10 @@ void setup()
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(STASSID);
-
+  mq9.begin();
+  mq9.setVoltage(3.3);    
+  mq9.setRange(100);      
+  mq9.solderedRL();
   /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
      would try to act as both a client and an access-point and could cause
      network-issues with your other WiFi-devices on your WiFi-network. */
@@ -95,8 +109,10 @@ void ConnectMqtt()
   Serial.print("Starting MQTT connection...");
   if (client.connect(MQTT_CLIENT_NAME))
   {
-    client.subscribe("esp32/actuador/oled");
-    client.publish("esp32/actuador/oled", "connected");
+    client.subscribe("esp32/actuador/OLED");
+    client.publish("esp32/actuador/OLED", "connected");
+    client.subscribe("esp32/actuador/BOCINA");
+    client.publish("esp32/actuador/BOCINA", "connected");
   }
   else
   {
@@ -174,7 +190,22 @@ String serializeDeviceBody(String deviceSerialId, String name, String mqttChanne
   serializeJson(doc, output);
   return output;
 }
+void leerMQ9() {
+  co = mq9.MQ9DataCO();     // Monóxido de carbono (ppm) limite 2000
+  ch4 = mq9.MQ9DataCH4();   // Metano (ppm) limite 450
+  lpg = mq9.MQ9DataLPG();   // Gas licuado del petróleo (ppm)limite 450
 
+  Serial.print("CO (ppm): ");
+  Serial.println(co);
+  
+  Serial.print("CH4 (ppm): ");
+  Serial.println(ch4);
+
+  Serial.print("LPG (ppm): ");
+  Serial.println(lpg);
+
+  Serial.println("-----------------------");
+}
 void deserializeActuatorStatusBody(String responseJson)
 {
   if (responseJson != "")
@@ -377,11 +408,51 @@ void POST_tests()
   http.begin(serverPath.c_str());
   test_response(http.POST(actuator_states_body));
 
-  String sensor_value_body = serializeSensorValueBody(18, millis(), random(2000, 4000) / 100);
-  describe("Test POST with sensor value");
+ String sensor_value_body = serializeSensorValueBody(18, millis(), random(2000, 4000) / 100);
+   describe("Test POST with sensor value");
   serverPath = serverName + "api/sensor_values";
   http.begin(serverPath.c_str());
   test_response(http.POST(sensor_value_body));
+
+  // String device_body = serializeDeviceBody(String(DEVICE_ID), ("Name_" + String(DEVICE_ID)).c_str(), ("mqtt_" + String(DEVICE_ID)).c_str(), 12);
+  // describe("Test POST with path and body and response");
+  // serverPath = serverName + "api/device";
+  // http.begin(serverPath.c_str());
+  // test_response(http.POST(actuator_states_body));
+}
+void POST_sensores(String JSON)
+{
+  String actuator_states_body = JSON;
+  describe("Post estado sensor");
+  String serverPath = serverName + "/api/values";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(actuator_states_body));
+
+  //String sensor_value_body = serializeSensorValueBody(18, millis(), random(2000, 4000) / 100);
+  // describe("Test POST with sensor value");
+  //serverPath = serverName + "api/sensor_values";
+  //http.begin(serverPath.c_str());
+  //test_response(http.POST(sensor_value_body));
+
+  // String device_body = serializeDeviceBody(String(DEVICE_ID), ("Name_" + String(DEVICE_ID)).c_str(), ("mqtt_" + String(DEVICE_ID)).c_str(), 12);
+  // describe("Test POST with path and body and response");
+  // serverPath = serverName + "api/device";
+  // http.begin(serverPath.c_str());
+  // test_response(http.POST(actuator_states_body));
+}
+void POST_actuadores(String JSON)
+{
+  String actuator_states_body = JSON;
+  describe("Post estado actuadores");
+  String serverPath = serverName + "/api/state";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(actuator_states_body));
+
+  //String sensor_value_body = serializeSensorValueBody(18, millis(), random(2000, 4000) / 100);
+  // describe("Test POST with sensor value");
+  //serverPath = serverName + "api/sensor_values";
+  //http.begin(serverPath.c_str());
+  //test_response(http.POST(sensor_value_body));
 
   // String device_body = serializeDeviceBody(String(DEVICE_ID), ("Name_" + String(DEVICE_ID)).c_str(), ("mqtt_" + String(DEVICE_ID)).c_str(), 12);
   // describe("Test POST with path and body and response");
@@ -393,7 +464,16 @@ void POST_tests()
 // Run the tests!
 void loop()
 {
-  GET_tests();
-  POST_tests();
+  //GET_tests();
+  //POST_tests();
   HandleMqtt();
+  leerMQ9();
+  String valorCOMQ9= serializeSensorValueBody(0,milis(),co);
+  String valorCH4Q9= serializeSensorValueBody(1,milis(),ch4);
+  String valorLPGMQ9= serializeSensorValueBody(2,milis(),lpg);
+  POST_sensores(valorCOMQ9);
+  POST_sensores(valorCH4Q9);
+  POST_sensores(valorLPGMQ9);
+
+  
 }
