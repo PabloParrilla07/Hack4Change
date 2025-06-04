@@ -3,7 +3,17 @@
 #include <WiFiUdp.h>
 #include <PubSubClient.h>
 #include <MQSpaceData.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
 #define MQ9_PIN 36 
+
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
 float co=0.0;
 float ch4 = 0.0;
 float lpg = 0.0;
@@ -37,6 +47,21 @@ const char *MQTT_CLIENT_NAME = "ArduinoClient_0";
 
 // callback a ejecutar cuando se recibe un mensaje
 // en este ejemplo, muestra por serial el mensaje recibido
+void initOLED() {
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("Fallo en OLED"));
+    while (true);
+  }
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println("Pantalla lista");
+  delay(3000);
+  //YO AQUÍ HARÍA UN DELAY DE TRES SEGUNDOS
+  //Y LUEGO BORRARÍA ESE MENSAJE PARA TENER EL ESPACIO
+  display.display();
+}
 void OnMqttReceived(char *topic, byte *payload, unsigned int length)
 {
   Serial.print("Received on ");
@@ -51,7 +76,13 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   Serial.print(content);
   Serial.println();
   if(topic=="esp32/actuador/OLED"){
-    Serial.println("ble ble ble");
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.println("Gas data:");
+    display.println(content);
+    display.display();
   }else if(topic=="esp32/actuador/BOCINA"){
     Serial.println("bla bla bla");
   }
@@ -80,6 +111,7 @@ void setup()
   mq9.setVoltage(3.3);    
   mq9.setRange(100);      
   mq9.solderedRL();
+  initOLED();
   /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
      would try to act as both a client and an access-point and could cause
      network-issues with your other WiFi-devices on your WiFi-network. */
