@@ -10,7 +10,7 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
-#define MQ9_PIN 36 
+#define MQ9_PIN 35
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -18,6 +18,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 float co=0.0;
 float ch4 = 0.0;
 float lpg = 0.0;
+float Ro=0.0;
 
 
 MQSpaceData mq9(12, MQ9_PIN);
@@ -28,19 +29,19 @@ int test_delay = 1000; // so we don't spam the API
 boolean describe_tests = true;
 
 // Replace 0.0.0.0 by your server local IP (ipconfig [windows] or ifconfig [Linux o MacOS] gets IP assigned to your PC)
-String serverName = "RestHighLevelClient";
+String serverName = "http://192.168.66.209:8080/";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
-#define STASSID "Pablo"    //"Your_Wifi_SSID"
-#define STAPSK "whichone" //"Your_Wifi_PASSWORD"
+#define STASSID "rafa_cuadrado"    //"Your_Wifi_SSID"
+#define STAPSK "03102003RIcs" //"Your_Wifi_PASSWORD"
 
 // MQTT configuration
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 // Server IP, where de MQTT broker is deployed
-const char *MQTT_BROKER_ADRESS = "localhost";
+const char *MQTT_BROKER_ADRESS = "192.168.66.209";
 const uint16_t MQTT_PORT = 1883;
 
 // Name for this MQTT client
@@ -63,6 +64,9 @@ void initOLED() {
   display.display();
   delay(3000);
   display.clearDisplay();
+  display.println("Pantalla NO lista");
+  display.display();
+
 }
 void OnMqttReceived(char *topic, byte *payload, unsigned int length)
 {
@@ -107,6 +111,18 @@ void InitMqtt()
 void setup()
 {
   Serial.begin(9600);
+  // Configuración y calibración del MQ-9
+  mq9.setVoltage(3.3);      // Voltaje según cómo lo alimentes (3.3V o 5V)
+  mq9.setRange(100);        // Cuántas muestras se promedian
+  mq9.solderedRL();         // RL soldada de 1 kΩ
+  mq9.RSRoMQAir(9.6);       // Relación Rs/Ro en aire limpio (valor típico)
+
+  Ro = mq9.calculateRo();  // ¡Calibra aquí!
+  Serial.print("Ro calibrado: ");
+  Serial.println(Ro);
+
+  // Después de esto, puedes establecerlo manualmente si lo guardas
+  
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(STASSID);
@@ -183,10 +199,9 @@ String serializeSensorValueBody(int idSensor, long timestamp, float value)
 
   // Add values in the document
   //
-  doc["idSensor"] = idSensor;
+  doc["sensorId"] = idSensor;
   doc["timestamp"] = timestamp;
   doc["value"] = value;
-  doc["removed"] = false;
 
   // Generate the minified JSON and send it to the Serial port.
   //
@@ -205,7 +220,6 @@ String serializeActuatorStatusBody(float status, bool statusBinary, int idActuat
   doc["statusBinary"] = statusBinary;
   doc["idActuator"] = idActuator;
   doc["timestamp"] = timestamp;
-  doc["removed"] = false;
 
   String output;
   serializeJson(doc, output);
@@ -509,6 +523,12 @@ void loop()
   POST_sensores(valorCOMQ9);
   POST_sensores(valorCH4Q9);
   POST_sensores(valorLPGMQ9);
-
+  Serial.println("Valor co");
+  Serial.println(co);
+  Serial.println("Valor lpg");
+  Serial.println(lpg);
+  Serial.println("Valor ch4");
+  Serial.println(ch4);
+  Serial.println(Ro);
   
 }
