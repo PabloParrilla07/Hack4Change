@@ -64,8 +64,7 @@ void initOLED() {
   display.display();
   delay(3000);
   display.clearDisplay();
-  display.println("Pantalla NO lista");
-  display.display();
+  delay(2000);
 
 }
 void OnMqttReceived(char *topic, byte *payload, unsigned int length)
@@ -80,19 +79,29 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
     content.concat((char)payload[i]);
   }
 
-  Serial.print(content);
-  Serial.println();
-  if(topic=="esp32/actuador/OLED"){
+
+  // Si el topic es el de OLED, muestra el mensaje en la pantalla OLED
+  if(String(topic)=="esp32/actuador/OLED"){
+    if(content!="connected"){
+    Serial.println("Mensaje recibido en OLED");
     display.clearDisplay();
-    display.setCursor(0, 0);
     display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
-    display.println(content);
-    display.setCursor(0, 8);
-    display.display();
-  }else if(topic=="esp32/actuador/BOCINA"){
-    Serial.println("bla bla bla");
+    display.print(content);
+    display.setCursor(0, 0);
+    display.display();}
+  }else if(String(topic)=="esp32/actuador/BOCINA"){
+    if(content!="connected"){
+      if(content=="ON"){
+      digitalWrite(12, HIGH);
+      delay(2000);
+      digitalWrite(12,LOW); // Enciende la bocina
+    }else{
+      digitalWrite(12, LOW); // Apaga la bocina
+    }
+    Serial.println("Mensaje recibido en BOCINA");
   }
+}
   
 }
 
@@ -111,6 +120,8 @@ void InitMqtt()
 void setup()
 {
   Serial.begin(9600);
+  pinMode(12, OUTPUT);
+
   // Configuración y calibración del MQ-9
   mq9.setVoltage(3.3);      // Voltaje según cómo lo alimentes (3.3V o 5V)
   mq9.setRange(100);        // Cuántas muestras se promedian
@@ -516,7 +527,7 @@ void loop()
   //GET_tests();
   //POST_tests();
   HandleMqtt();
-  leerMQ9();
+ /* leerMQ9();
   String valorCOMQ9= serializeSensorValueBody(0,1000000000,co);
   String valorCH4Q9= serializeSensorValueBody(1,10000000000,ch4);
   String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,lpg);
@@ -529,6 +540,6 @@ void loop()
   Serial.println(lpg);
   Serial.println("Valor ch4");
   Serial.println(ch4);
-  Serial.println(Ro);
+  Serial.println(Ro);*/
   
 }
