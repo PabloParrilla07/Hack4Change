@@ -2300,6 +2300,7 @@ Caused by: org.eclipse.core.runtime.CoreException: Cannot determine URI for '/de
 2025-05-18 19:23:10,059 [Worker-23: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
 2025-05-18 19:23:10,060 [Worker-23: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 2025-05-18 19:23:10,060 [Worker-23: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+<<<<<<< Updated upstream
 2025-06-04 23:56:03,838 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
 2025-06-05 00:24:40,468 [Worker-44: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\pablo\Desktop\Universidad\Hack4Change\RepositorioH4C\Hack4Change\detectorGases\pom.xml.
 2025-06-05 00:24:40,468 [Worker-37: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: es.us.H4C.sensors:detectorGases:0.0.1-SNAPSHOT @ C:\Users\pablo\Desktop\Universidad\Hack4Change\RepositorioH4C\Hack4Change\detectorGases\pom.xml.
@@ -2392,3 +2393,86 @@ Caused by: org.eclipse.core.runtime.CoreException: Cannot determine URI for '/de
 2025-06-05 12:24:57,930 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started oejs.Server@1cc9948b{STARTING}[12.0.15,sto=0] @7603184ms
 2025-06-05 12:54:26,038 [Stop Help Server] INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@1cc9948b{STOPPING}[12.0.15,sto=0]
 2025-06-05 12:54:26,047 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@3eaea914{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+=======
+2025-06-04 11:09:13,995 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2025-06-04 11:24:12,523 [Worker-42: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 11:24:12,524 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 11:24:12,527 [Worker-42: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 11:24:12,527 [Worker-42: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 12:18:21,484 [Worker-50: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 12:18:21,484 [Worker-50: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 12:18:21,487 [Worker-50: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 12:18:21,488 [Worker-50: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 12:20:23,959 [Worker-48: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 12:20:23,960 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 12:20:23,961 [Worker-48: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 12:20:23,961 [Worker-48: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:18:25,935 [Worker-64: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:18:25,935 [Worker-64: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:18:25,938 [Worker-64: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:18:25,938 [Worker-64: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:18:36,636 [Worker-64: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:18:36,637 [Worker-64: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:18:36,639 [Worker-64: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:18:36,639 [Worker-64: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:39:31,094 [Worker-65: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:39:31,094 [Worker-65: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:39:31,097 [Worker-65: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:39:31,097 [Worker-65: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:40:29,659 [Worker-66: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:40:29,659 [Worker-66: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:40:29,661 [Worker-66: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:40:29,661 [Worker-66: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:43:46,506 [Worker-69: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:43:46,506 [Worker-69: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:43:46,507 [Worker-69: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:43:46,507 [Worker-69: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:44:31,135 [Worker-65: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:44:31,136 [Worker-65: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:44:31,137 [Worker-65: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:44:31,137 [Worker-65: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:44:45,521 [Worker-70: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:44:45,521 [Worker-70: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:44:45,522 [Worker-70: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:44:45,522 [Worker-70: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:56:37,149 [Worker-73: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:56:37,149 [Worker-73: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:56:37,150 [Worker-73: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:56:37,150 [Worker-73: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 13:57:32,323 [Worker-73: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:57:32,323 [Worker-73: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 13:57:32,324 [Worker-73: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 13:57:32,324 [Worker-73: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:00:10,516 [Worker-77: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:00:10,516 [Worker-77: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:00:10,517 [Worker-77: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:00:10,518 [Worker-77: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:01:03,451 [Worker-74: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:01:03,452 [Worker-74: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:01:03,453 [Worker-74: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:01:03,453 [Worker-74: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:01:58,109 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:01:58,109 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:01:58,110 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:01:58,110 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:03:30,730 [Worker-77: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:03:30,730 [Worker-77: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:03:30,731 [Worker-77: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:03:30,731 [Worker-77: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:04:09,048 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:04:09,048 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:04:09,049 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:04:09,049 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:08:45,897 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:08:45,897 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:08:45,898 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:08:45,898 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:10:29,042 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:10:29,043 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:10:29,044 [Worker-78: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:10:29,044 [Worker-78: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+2025-06-04 14:10:48,599 [Worker-74: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:10:48,599 [Worker-74: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/main/resources
+2025-06-04 14:10:48,600 [Worker-74: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2025-06-04 14:10:48,600 [Worker-74: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory /home/paco/Documents/Universidad/DAD/Hack4Change/detectorGases/src/test/resources
+>>>>>>> Stashed changes
