@@ -29,7 +29,9 @@ public class RestHighServer extends AbstractVerticle{
     Float mq9CH4Value;
     Float mq9C0Value;
     Float mq9GLPValue;
+    Float maxValue;
 	
+    Integer ID;
     
     
 	//FUNCIONES DEL RESTHIGHSERVER: -PUBLICA TOPICS
@@ -93,6 +95,7 @@ public class RestHighServer extends AbstractVerticle{
             int mq9CH4=0;
             int mq9C0=1;
             int mq9GLP=2;
+            int MAX = 3;
             
             String oledMessage = "";
             
@@ -110,28 +113,45 @@ public class RestHighServer extends AbstractVerticle{
             //PMS -->  >25 o 50 depende de cual usemos
             //MAX -->  >800
             
-            if (value.getIdSensor().equals(mq9CH4)) mq9CH4Value = value.getValue();
-            if (value.getIdSensor().equals(mq9C0))  mq9C0Value = value.getValue();
-            if (value.getIdSensor().equals(mq9GLP)) mq9GLPValue = value.getValue();
-            
-            oledMessage = "CH4: " + mq9CH4Value + "CO: " + mq9C0Value + "GLP: " + mq9GLPValue;
-            
-            mqttClient.publish(act1, Buffer.buffer(oledMessage),
-                    MqttQoS.AT_LEAST_ONCE, false, false);
+            if (ID.equals(mq9CH4)) {
+                mq9CH4Value = value.getValue();
+                oledMessage = ID + "CH4: " + mq9CH4Value;
+            }
+            if (ID.equals(mq9C0))  {
+                mq9C0Value = value.getValue();
+                oledMessage = ID + "CO: " + mq9C0Value;
+            }
+            if (ID.equals(mq9GLP)) {
+                mq9GLPValue = value.getValue();
+                oledMessage = ID + "GLP: " + mq9GLPValue;
+            }
+            if(ID.equals(MAX)) {
+            	maxValue = value.getValue();
+            	oledMessage = ID+ "Particulas: " + maxValue;
+            }
+
+
+            mqttClient.publish(act1, Buffer.buffer(ID),MqttQoS.AT_LEAST_ONCE, false, false);
+
 
             
             
-            if(value.getIdSensor().equals(mq9CH4) && value.getValue()>2000){
+            if(ID.equals(mq9CH4) && value.getValue()>2000){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
                 System.out.println("Bocina ON");
             }
-            else if(value.getIdSensor().equals(mq9C0) && value.getValue() > 450){
+            else if(ID.equals(mq9C0) && value.getValue() > 450){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
                 System.out.println("Bocina ON");
             }
-            else if(value.getIdSensor().equals(mq9GLP) && value.getValue() > 450){
+            else if(ID.equals(mq9GLP) && value.getValue() > 450){
+                mqttClient.publish(act2, Buffer.buffer("ON"),
+                        MqttQoS.AT_LEAST_ONCE, false, false);
+                System.out.println("Bocina ON");
+            }
+            else if(ID.equals(MAX) && value.getValue() > 10000){
                 mqttClient.publish(act2, Buffer.buffer("ON"),
                         MqttQoS.AT_LEAST_ONCE, false, false);
                 System.out.println("Bocina ON");

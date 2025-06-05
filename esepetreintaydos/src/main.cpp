@@ -6,6 +6,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Ethernet.h>
+#include <MQUnifiedsensor.h>
+//#include "MAX30105.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -15,13 +17,30 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-float co=0.0;
-float ch4 = 0.0;
-float lpg = 0.0;
-float Ro=0.0;
+#include <MQUnifiedsensor.h>
+/************************Hardware Related Macros************************************/
+#define         Board                   ("Arduino UNO")
+#define         Pin                     (35)  //Analog input 4 of your arduino
+/***********************Software Related Macros************************************/
+#define         Type                    ("MQ-9") //MQ9
+#define         Voltage_Resolution      (5)
+#define         ADC_Bit_Resolution      (10) // For arduino UNO/MEGA/NANO
+#define         RatioMQ9CleanAir        (9.6) //RS / R0 = 60 ppm 
+/*****************************Globals***********************************************/
+//Declare Sensor
+MQUnifiedsensor MQ9(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
 
+//MAX30105 particleSensor;
+//uint16_t ir;
 
-MQSpaceData mq9(12, MQ9_PIN);
+char id;
+String dato;
+
+float LPG;
+float CH4;
+float CO;
+
+//MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
 const int DEVICE_ID = 0;
 
@@ -67,10 +86,12 @@ void initOLED() {
   delay(2000);
 
 }
+
 void OnMqttReceived(char *topic, byte *payload, unsigned int length)
 {
   Serial.print("Received on ");
   Serial.print(topic);
+  String top = String(topic);
   Serial.print(": ");
 
   String content = "";
@@ -79,30 +100,45 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
     content.concat((char)payload[i]);
   }
 
+  id = content.charAt(0);  // El primer carácter indica el sensor ID
+  dato = content.substring(1); // El resto es el dato a mostrar
 
   // Si el topic es el de OLED, muestra el mensaje en la pantalla OLED
-  if(String(topic)=="esp32/actuador/OLED"){
-    if(content!="connected"){
-    Serial.println("Mensaje recibido en OLED");
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.print(content);
-    display.setCursor(0, 0);
-    display.display();}
-  }else if(String(topic)=="esp32/actuador/BOCINA"){
-    if(content!="connected"){
-      if(content=="ON"){
-      digitalWrite(12, HIGH);
-      delay(2000);
-      digitalWrite(12,LOW); // Enciende la bocina
-    }else{
-      digitalWrite(12, LOW); // Apaga la bocina
+  if (top == "esp32/actuador/OLED") {
+    if (content != "connected") {
+      Serial.println("Mensaje recibido en OLED");
+      display.clearDisplay();
+      display.setTextSize(1);
+      display.setTextColor(SSD1306_WHITE);
+      if (id == '0') {
+        display.setCursor(0, 0);
+        display.print(dato);
+      } else if (id == '1') {
+        display.setCursor(0, 8);
+        display.print(dato);
+      } else if (id == '2') {
+        display.setCursor(0, 16);
+        display.print(dato);
+      } else if (id=='3') {
+        display.setCursor(0,24);
+        display.print(dato);
+      }
+
+      display.display(); // Mostrar todo al final
     }
-    Serial.println("Mensaje recibido en BOCINA");
   }
-}
-  
+  else if (top == "esp32/actuador/BOCINA") {
+    if (content != "connected") {
+      if (content == "ON") {
+        digitalWrite(12, HIGH);
+        delay(2000);
+        digitalWrite(12, LOW);
+      } else {
+        digitalWrite(12, LOW);
+      }
+      Serial.println("Mensaje recibido en BOCINA");
+    }
+  }
 }
 
 // inicia la comunicacion MQTT
@@ -113,34 +149,50 @@ void InitMqtt()
   client.setCallback(OnMqttReceived);
 }
 
-
-
+/*void leerMAX()
+{
+  ir = particleSensor.getIR();
+  if (ir > 10000) {
+    Serial.println("¡Alta concentración de partículas!");
+    Serial.println(ir);
+  }else {
+    Serial.println("Ambiente limpio.");
+    Serial.println(ir);
+  }
+  delay(100);
+}*/
 
 // Setup
 void setup()
 {
   Serial.begin(9600);
   pinMode(12, OUTPUT);
-
+  //particleSensor.setup();
   // Configuración y calibración del MQ-9
-  mq9.setVoltage(3.3);      // Voltaje según cómo lo alimentes (3.3V o 5V)
-  mq9.setRange(100);        // Cuántas muestras se promedian
-  mq9.solderedRL();         // RL soldada de 1 kΩ
-  mq9.RSRoMQAir(9.6);       // Relación Rs/Ro en aire limpio (valor típico)
-
-  Ro = mq9.calculateRo();  // ¡Calibra aquí!
-  Serial.print("Ro calibrado: ");
-  Serial.println(Ro);
+ MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
+ 
+  
+  /*****************************  MQ Init ********************************************/ 
+ MQ9.init(); 
+  Serial.print("Calibrating please wait.");
+  float calcR0 = 0;
+  for(int i = 1; i<=10; i ++)
+  {
+    MQ9.update(); // Update data, the arduino will read the voltage from the analog pin
+    calcR0 += MQ9.calibrate(RatioMQ9CleanAir);
+    Serial.print(".");
+  }
+  MQ9.setR0(calcR0/10);
+  Serial.println("  done!.");
+  
+  if(isinf(calcR0)) {Serial.println("Warning: Conection issue, R0 is infinite (Open circuit detected) please check your wiring and supply"); while(1);}
+  if(calcR0 == 0){Serial.println("Warning: Conection issue found, R0 is zero (Analog pin shorts to ground) please check your wiring and supply"); while(1);}
 
   // Después de esto, puedes establecerlo manualmente si lo guardas
   
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(STASSID);
-  mq9.begin();
-  mq9.setVoltage(3.3);    
-  mq9.setRange(100);      
-  mq9.solderedRL();
   initOLED();
   /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
      would try to act as both a client and an access-point and could cause
@@ -171,9 +223,8 @@ void ConnectMqtt()
   Serial.print("Starting MQTT connection...");
   if (client.connect(MQTT_CLIENT_NAME))
   {
-    client.subscribe("esp32/actuador/OLED");
+    client.subscribe("esp32/actuador/#");
     client.publish("esp32/actuador/OLED", "connected");
-    client.subscribe("esp32/actuador/BOCINA");
     client.publish("esp32/actuador/BOCINA", "connected");
   }
   else
@@ -251,21 +302,30 @@ String serializeDeviceBody(String deviceSerialId, String name, String mqttChanne
   return output;
 }
 void leerMQ9() {
-  co = mq9.MQ9DataCO();     // Monóxido de carbono (ppm) limite 2000
-  ch4 = mq9.MQ9DataCH4();   // Metano (ppm) limite 450
-  lpg = mq9.MQ9DataLPG();   // Gas licuado del petróleo (ppm)limite 450
+
+  MQ9.update();
+
+  MQ9.setA(1000.5); MQ9.setB(-2.186); // Configure the equation to to calculate LPG concentration
+  LPG = MQ9.readSensor(); // Sensor will read PPM concentration using the model, a and b values set previously or from the setup
+
+  MQ9.setA(4269.6); MQ9.setB(-2.648); // Configure the equation to to calculate LPG concentration
+  CH4 = MQ9.readSensor(); // Sensor will read PPM concentration using the model, a and b values set previously or from the setup
+
+  MQ9.setA(599.65); MQ9.setB(-2.244); // Configure the equation to to calculate LPG concentration
+  CO = MQ9.readSensor(); // Sensor will read PPM concentration using the model, a and b values set previously or from the setup
 
   Serial.print("CO (ppm): ");
-  Serial.println(co);
+  Serial.println(CO);
   
   Serial.print("CH4 (ppm): ");
-  Serial.println(ch4);
+  Serial.println(CH4);
 
   Serial.print("LPG (ppm): ");
-  Serial.println(lpg);
+  Serial.println(LPG);
 
   Serial.println("-----------------------");
 }
+
 void deserializeActuatorStatusBody(String responseJson)
 {
   if (responseJson != "")
@@ -527,19 +587,20 @@ void loop()
   //GET_tests();
   //POST_tests();
   HandleMqtt();
- /* leerMQ9();
-  String valorCOMQ9= serializeSensorValueBody(0,1000000000,co);
-  String valorCH4Q9= serializeSensorValueBody(1,10000000000,ch4);
-  String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,lpg);
+  leerMQ9();
+  //leerMAX();
+  //String valorMAX= serializeSensorValueBody(3,1000000000000,ir);
+  String valorCOMQ9= serializeSensorValueBody(0,1000000000,CO);
+  String valorCH4Q9= serializeSensorValueBody(1,10000000000,CH4);
+  String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,LPG);
   POST_sensores(valorCOMQ9);
   POST_sensores(valorCH4Q9);
   POST_sensores(valorLPGMQ9);
+  //POST_sensores(valorMAX);
   Serial.println("Valor co");
-  Serial.println(co);
+  Serial.println(CO);
   Serial.println("Valor lpg");
-  Serial.println(lpg);
+  Serial.println(LPG);
   Serial.println("Valor ch4");
-  Serial.println(ch4);
-  Serial.println(Ro);*/
-  
+  Serial.println(CH4);
 }
