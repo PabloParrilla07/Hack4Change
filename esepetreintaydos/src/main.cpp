@@ -5,6 +5,7 @@
 #include <MQSpaceData.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Ethernet.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -31,8 +32,8 @@ String serverName = "RestHighLevelClient";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
-#define STASSID ""    //"Your_Wifi_SSID"
-#define STAPSK "Your_Wifi_PASSWORD" //"Your_Wifi_PASSWORD"
+#define STASSID "Pablo"    //"Your_Wifi_SSID"
+#define STAPSK "whichone" //"Your_Wifi_PASSWORD"
 
 // MQTT configuration
 WiFiClient espClient;
@@ -48,19 +49,20 @@ const char *MQTT_CLIENT_NAME = "ArduinoClient_0";
 // callback a ejecutar cuando se recibe un mensaje
 // en este ejemplo, muestra por serial el mensaje recibido
 void initOLED() {
+  Wire.begin(21,22);
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("Fallo en OLED"));
     while (true);
   }
+  Serial.println("Fallo en OLED");
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
   display.println("Pantalla lista");
-  delay(3000);
-  //YO AQUÍ HARÍA UN DELAY DE TRES SEGUNDOS
-  //Y LUEGO BORRARÍA ESE MENSAJE PARA TENER EL ESPACIO
   display.display();
+  delay(3000);
+  display.clearDisplay();
 }
 void OnMqttReceived(char *topic, byte *payload, unsigned int length)
 {
@@ -73,6 +75,7 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   {
     content.concat((char)payload[i]);
   }
+
   Serial.print(content);
   Serial.println();
   if(topic=="esp32/actuador/OLED"){
@@ -80,8 +83,8 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
     display.setCursor(0, 0);
     display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
-    display.println("Gas data:");
     display.println(content);
+    display.setCursor(0, 8);
     display.display();
   }else if(topic=="esp32/actuador/BOCINA"){
     Serial.println("bla bla bla");
@@ -500,9 +503,9 @@ void loop()
   //POST_tests();
   HandleMqtt();
   leerMQ9();
-  String valorCOMQ9= serializeSensorValueBody(0,milis(),co);
-  String valorCH4Q9= serializeSensorValueBody(1,milis(),ch4);
-  String valorLPGMQ9= serializeSensorValueBody(2,milis(),lpg);
+  String valorCOMQ9= serializeSensorValueBody(0,1000000000,co);
+  String valorCH4Q9= serializeSensorValueBody(1,10000000000,ch4);
+  String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,lpg);
   POST_sensores(valorCOMQ9);
   POST_sensores(valorCH4Q9);
   POST_sensores(valorLPGMQ9);

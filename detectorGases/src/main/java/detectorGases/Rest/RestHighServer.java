@@ -26,6 +26,12 @@ public class RestHighServer extends AbstractVerticle{
 	String act1 = "esp32/actuador/OLED";
 	String act2 = "esp32/actuador/BOCINA";
 	
+    Float mq9CH4Value;
+    Float mq9C0Value;
+    Float mq9GLPValue;
+	
+    
+    
 	//FUNCIONES DEL RESTHIGHSERVER: -PUBLICA TOPICS
 	//							    -ENVÍA DATOS AL SERVIDOR BAJO NIVEL
 	//							    -CONTROL DE LOS ACTUADORES
@@ -88,8 +94,14 @@ public class RestHighServer extends AbstractVerticle{
             int mq9C0=1;
             int mq9GLP=2;
             
+            String oledMessage = "";
+            
             //Sensores realmente
              
+            //IDEAS PARA LA OLED:
+            	//HAGO UNA SOLA LÍNEA EN ECLIPSE, DIVIDO EN VISUAL STUDIO
+            	//HAGO VARIAS LÍNEAS EN ECLIPSE, EN VISUAL STUDIO NO SE COMO SE HARÍA
+            	//CREO MÁS TOPICS PARA SUSCRIBIRSE Y COMPROBAR LA ID DEL SENSOR
             
             // USO DE LA LÓGICA
             //MQ2 --> < 2 
@@ -98,11 +110,11 @@ public class RestHighServer extends AbstractVerticle{
             //PMS -->  >25 o 50 depende de cual usemos
             //MAX -->  >800
             
-            String oledMessage = "";
-            if (value.getIdSensor().equals(mq9CH4)) oledMessage += "CH4: " + value.getValue() + "\n";
-            if (value.getIdSensor().equals(mq9C0)) oledMessage += "CO: " + value.getValue() + "\n";
-            if (value.getIdSensor().equals(mq9GLP)) oledMessage += "GLP: " + value.getValue() + "\n";
-
+            if (value.getIdSensor().equals(mq9CH4)) mq9CH4Value = value.getValue();
+            if (value.getIdSensor().equals(mq9C0))  mq9C0Value = value.getValue();
+            if (value.getIdSensor().equals(mq9GLP)) mq9GLPValue = value.getValue();
+            
+            oledMessage = "CH4: " + mq9CH4Value + "CO: " + mq9C0Value + "GLP: " + mq9GLPValue;
             
             mqttClient.publish(act1, Buffer.buffer(oledMessage),
                     MqttQoS.AT_LEAST_ONCE, false, false);
