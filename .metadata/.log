@@ -7617,6 +7617,7 @@ java.lang.NullPointerException: Cannot invoke "org.eclipse.jdt.internal.compiler
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2025-05-18 19:23:10.060
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 !SESSION 2025-06-04 23:51:58.643 -----------------------------------------------
 eclipse.buildId=4.34.0.20241128-0756
 java.version=23.0.2
@@ -8545,6 +8546,8 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2025-06-05 11:28:28.993
 =======
+=======
+>>>>>>> Stashed changes
 !SESSION 2025-06-04 10:57:36.632 -----------------------------------------------
 eclipse.buildId=4.34.0.20241128-0756
 java.version=21.0.5
@@ -8727,5 +8730,8 @@ java.lang.ClassCastException
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2025-06-04 14:10:48.600
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
