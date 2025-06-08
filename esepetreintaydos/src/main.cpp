@@ -117,22 +117,28 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.setCursor(0, 0);
         display.fillRect(0, 0, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        serializeActuatorStatusBody()
+        serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+pantallaActuatorId++;
       } else if (id == '1') {
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
         display.print(dato);
-                       serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
         pantallaActuatorId++;
+
 
       } else if (id == '2') {
         display.setCursor(0, 16);
         display.fillRect(0, 16, 128, 8, SSD1306_BLACK);
         display.print(dato);
+serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
       } else if (id=='3') {
         display.setCursor(0,24);
         display.fillRect(0, 24, 128, 8, SSD1306_BLACK);
         display.print(dato);
+serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
       }
 
       display.display(); // Mostrar todo al final
