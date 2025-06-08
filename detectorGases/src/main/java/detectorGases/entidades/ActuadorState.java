@@ -7,13 +7,15 @@ public class ActuadorState {
 	protected Integer actuadorStateId; //(PK)
 	protected Integer actuadorId; //(FK)
 	protected Boolean state; //¿Encendido o apagado?
+	protected String valor;
 	protected Long timestamp;
 	
-	public ActuadorState(Integer id, Integer id_actuador, Boolean estado, Long timestamp) {
+	public ActuadorState(Integer id, Integer id_actuador, Boolean estado, String valor,Long timestamp) {
 		super();
 		this.actuadorStateId = id;
 		this.actuadorId = id_actuador;
 		this.state = estado;
+		this.valor = valor;
 		this.timestamp = timestamp;
 	}
 
@@ -47,6 +49,14 @@ public class ActuadorState {
 
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
 	} 
 	
 	

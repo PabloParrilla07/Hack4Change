@@ -10,17 +10,17 @@ public class Sensor{
 		//-Una sola clase sensors
 		//-Una sola clase sensors, y una para cada sensor usando herencia.
 
+	protected int sensorId;//(PK)
 	protected String name;
 	protected String type;
-	protected int sensorId;//(PK)
 	protected int deviceID; //(FK) Id de la esp32 a las que estas conectado
 
 		
-	public Sensor(String nombre, String tipo, int identificador, int deviceID) {
+	public Sensor(int identificador, String nombre, String tipo, int deviceID) {
 		super();
+		this.sensorId = identificador;
 		this.name = nombre;
 		this.type = tipo;
-		this.sensorId = identificador;
 		this.deviceID = deviceID;
 	}
 
@@ -87,7 +87,7 @@ public class Sensor{
 
 	@Override
 	public String toString() {
-		return "Sensor [nombre=" + name + ", tipo=" + type + ", identificador=" + sensorId + ", deviceID="
+		return "Sensor [Identificador =" + sensorId + ", Nombre = "+ name+", Tipo = " + type + ", deviceID = "
 				+ deviceID + "]";
 	}
 	

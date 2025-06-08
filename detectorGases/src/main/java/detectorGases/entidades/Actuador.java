@@ -7,12 +7,12 @@ public class Actuador {
 	protected String type;
 	protected Integer dispositivoId;//(FK)
 	
-	public Actuador(Integer id, String name, String type, Integer deviceID) {
+	public Actuador(Integer id, String name, String type, Integer dispositivoId) {
 		super();
 		this.actuadorId = id;
 		this.name = name;
 		this.type = type;
-		this.dispositivoId = deviceID;
+		this.dispositivoId = dispositivoId;
 	}
 	
 	public Integer getId() {
@@ -39,12 +39,12 @@ public class Actuador {
 		this.type = type;
 	}
 	
-	public Integer getDeviceID() {
+	public Integer getDispositivoId() {
 		return dispositivoId;
 	}
 	
-	public void setDeviceID(Integer deviceID) {
-		this.dispositivoId = deviceID;
+	public void setDispositivoId(Integer dispositivoId) {
+		this.dispositivoId = dispositivoId;
 	}
 
 }
