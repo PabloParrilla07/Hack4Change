@@ -115,7 +115,6 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.setCursor(0, 0);
         display.fillRect(0, 0, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        serializeActuatorStatusBody()
       } else if (id == '1') {
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
@@ -541,7 +540,7 @@ void GET_tests()
 
 void POST_tests()
 {
-  String actuator_states_body = serializeActuatorStatusBody(random(2000, 4000) / 100, true, 1, millis());
+  String actuator_states_body = serializeActuatorStatusBody(random(2000, 4000) / 100, true, 1, millis(),"");
   describe("Test POST with actuator state");
   String serverPath = serverName + "api/actuator_states";
   http.begin(serverPath.c_str());
