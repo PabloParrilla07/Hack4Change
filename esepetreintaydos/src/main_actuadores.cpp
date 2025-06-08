@@ -13,7 +13,7 @@
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 #define MQ9_PIN 35
-#define IP "192.168.66.18"
+#define IP "192.168.66.42"
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -42,6 +42,7 @@ float CH4;
 float CO;
 int bocinaActuatorId=0;
 int pantallaActuatorId=0;
+String dato2="";
 
 MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
@@ -51,7 +52,7 @@ int test_delay = 1000; // so we don't spam the API
 boolean describe_tests = true;
 
 // Replace 0.0.0.0 by your server local IP (ipconfig [windows] or ifconfig [Linux o MacOS] gets IP assigned to your PC)
-String serverName = "http://192.168.66.18:8080/";
+String serverName = "http://192.168.66.42:8080/";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
@@ -117,31 +118,22 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.setCursor(0, 0);
         display.fillRect(0, 0, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
+        dato2=dato2+dato;
       } else if (id == '1') {
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
-
+        dato2=dato2+dato;
       } else if (id == '2') {
         display.setCursor(0, 16);
         display.fillRect(0, 16, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
+        dato2=dato2+dato;
       } else if (id=='3') {
         display.setCursor(0,24);
         display.fillRect(0, 24, 128, 8, SSD1306_BLACK);
         display.print(dato);
-        String yeison= serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
+        dato2=dato2+dato;
       }
 
       display.display(); // Mostrar todo al final
@@ -152,16 +144,12 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
       if (content == "ON") {
         Serial.println("Encendida");
         digitalWrite(12, HIGH);
-        String yeison=serializeActuatorStatusBody(bocinaActuatorId, true,0,100000,"encendida");
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
+        dato2=dato2+" encendida";
         delay(2000);
         digitalWrite(12, LOW);
       } else {
         digitalWrite(12, LOW);
-        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,"apagada");
-        pantallaActuatorId++;
-        POST_actuadores(yeison);
+        dato2=dato2+" apagada";
       }
       Serial.println("Mensaje recibido en BOCINA");
     }
@@ -561,7 +549,7 @@ void GET_tests()
 
 void POST_tests()
 {
-  String actuator_states_body = serializeActuatorStatusBody(random(2000, 4000) / 100, true, 1, millis());
+  String actuator_states_body = serializeActuatorStatusBody(random(2000, 4000) / 100, true, 1, millis(),"");
   describe("Test POST with actuator state");
   String serverPath = serverName + "api/actuator_states";
   http.begin(serverPath.c_str());
@@ -628,19 +616,21 @@ void loop()
   HandleMqtt();
   //leerMQ9();
   //leerMAX();
-  String valorMAX= serializeSensorValueBody(3,1000000000000,ir);
-  String valorCOMQ9= serializeSensorValueBody(0,1000000000,CO);
-  String valorCH4Q9= serializeSensorValueBody(1,10000000000,CH4);
-  String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,LPG);
+  //String valorMAX= serializeSensorValueBody(3,1000000000000,ir);
+  //String valorCOMQ9= serializeSensorValueBody(0,1000000000,CO);
+  //String valorCH4Q9= serializeSensorValueBody(1,10000000000,CH4);
+  //String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,LPG);
   //POST_sensores(valorCOMQ9);
   //POST_sensores(valorCH4Q9);
   //POST_sensores(valorLPGMQ9);
   //POST_sensores(valorMAX);
-
+  String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato2);
+  POST_actuadores(yeison);
+/*
   Serial.println("Valor co");
   Serial.println(CO);
   Serial.println("Valor lpg");
   Serial.println(LPG);
   Serial.println("Valor ch4");
-  Serial.println(CH4);
+  Serial.println(CH4);*/
 }
