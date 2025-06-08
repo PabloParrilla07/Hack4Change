@@ -70,7 +70,7 @@ public class RestHighServer extends AbstractVerticle{
 		//Qué significa esta línea?
 		//Cuando la esp32 haga un POST, realizará la función que se esta declarando
 		router.post("/api/values").handler(this::accionValuePost);
-		router.route("/api/states").handler(this::accionStatePost);
+		router.post("/api/states").handler(this::accionStatePost);
 
 		// Handling any server startup result
 		vertx.createHttpServer().requestHandler(router::handle).listen(8080, result -> {
