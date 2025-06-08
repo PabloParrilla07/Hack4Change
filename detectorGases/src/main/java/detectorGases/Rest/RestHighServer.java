@@ -26,7 +26,7 @@ public class RestHighServer extends AbstractVerticle{
 	String act1 = "esp32/actuador/OLED";
 	String act2 = "esp32/actuador/BOCINA";
 	
-	String IP = "192.168.1.21";
+	String IP = "192.168.66.42";
 	
     Float mq9CH4Value;
     Float mq9C0Value;

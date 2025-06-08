@@ -746,8 +746,8 @@ public class RestLowServer extends AbstractVerticle{
 		mySqlClient.getConnection(connection -> {
 			if (connection.succeeded()) {
 				connection.result().preparedQuery(
-					"INSERT INTO ActuadorState(idActuadorState, estado, valor,timestamp) VALUES (?, ?, ?, ?);")
-					.execute(Tuple.of(idEstado, estado, timestamp, actuadorId), res -> {
+					"INSERT INTO ActuadorState(idActuadorState, estado, valor,timestamp, idActuador) VALUES (?, ?, ?, ?, ?);")
+					.execute(Tuple.of(idEstado, estado, valor, timestamp, actuadorId), res -> {
 						if (res.succeeded()) {
 							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
 							.setStatusCode(201).end("Estado del actuador añadido");
