@@ -40,6 +40,8 @@ String dato;
 float LPG;
 float CH4;
 float CO;
+int bocinaActuatorId=0;
+int pantallaActuatorId=0;
 
 MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
@@ -120,6 +122,9 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
         display.print(dato);
+                       serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
+
       } else if (id == '2') {
         display.setCursor(0, 16);
         display.fillRect(0, 16, 128, 8, SSD1306_BLACK);
