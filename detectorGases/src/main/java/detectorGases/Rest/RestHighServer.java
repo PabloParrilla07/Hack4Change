@@ -26,6 +26,8 @@ public class RestHighServer extends AbstractVerticle{
 	String act1 = "esp32/actuador/OLED";
 	String act2 = "esp32/actuador/BOCINA";
 	
+	String IP = "192.168.1.21";
+	
     Float mq9CH4Value;
     Float mq9C0Value;
     Float mq9GLPValue;
@@ -52,7 +54,7 @@ public class RestHighServer extends AbstractVerticle{
 		
 		
 		//LO CONECTAMOS AL BROKER
-		mqttClient.connect(1883, "192.168.66.209", s -> {
+		mqttClient.connect(1883, IP, s -> {
 			if(s.succeeded()) {
 				System.out.println("Conectado al Broker MQTT");
 			
@@ -98,6 +100,8 @@ public class RestHighServer extends AbstractVerticle{
             int MAX = 3;
             
             String oledMessage = "";
+            
+            ID = value.getIdSensor();
             
             //Sensores realmente
              
@@ -165,7 +169,7 @@ public class RestHighServer extends AbstractVerticle{
             System.out.println("Mensaje OLED publicado:\n" + oledMessage);
             
             // Reenviar el valor al servidor de bajo nivel
-            webClient.post(8080, "192.168.66.209", "/api/values")
+            webClient.post(8081, IP, "/api/values")
                     .sendBuffer(Buffer.buffer(gson.toJson(value)), res -> {
                         if (res.succeeded()) {
                         	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
@@ -183,7 +187,7 @@ public class RestHighServer extends AbstractVerticle{
 		try {
 			
 			ActuadorState state = gson.fromJson(routingContext.getBodyAsString(), ActuadorState.class);
-			webClient.post(8080, "192.168.66.209", "/api/states")
+			webClient.post(8081, IP, "/api/states")
             .sendBuffer(Buffer.buffer(gson.toJson(state)), res -> {
                 if (res.succeeded()) {
                 	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
