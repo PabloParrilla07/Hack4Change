@@ -119,13 +119,14 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.print(dato);
         String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
         pantallaActuatorId++;
+        POST_actuadores(yeison);
       } else if (id == '1') {
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
         display.print(dato);
         String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
         pantallaActuatorId++;
-
+        POST_actuadores(yeison);
 
       } else if (id == '2') {
         display.setCursor(0, 16);
@@ -133,12 +134,14 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
         display.print(dato);
         String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
         pantallaActuatorId++;
+        POST_actuadores(yeison);
       } else if (id=='3') {
         display.setCursor(0,24);
         display.fillRect(0, 24, 128, 8, SSD1306_BLACK);
         display.print(dato);
         String yeison= serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
         pantallaActuatorId++;
+        POST_actuadores(yeison);
       }
 
       display.display(); // Mostrar todo al final
@@ -149,10 +152,16 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
       if (content == "ON") {
         Serial.println("Encendida");
         digitalWrite(12, HIGH);
+        String yeison=serializeActuatorStatusBody(bocinaActuatorId, true,0,100000,"encendida");
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
         delay(2000);
         digitalWrite(12, LOW);
       } else {
         digitalWrite(12, LOW);
+        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,"apagada");
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
       }
       Serial.println("Mensaje recibido en BOCINA");
     }
