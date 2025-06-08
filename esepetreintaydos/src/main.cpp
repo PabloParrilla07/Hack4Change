@@ -13,6 +13,7 @@
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 #define MQ9_PIN 35
+#define IP "192.168.66.18"
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -31,7 +32,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 MQUnifiedsensor MQ9(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
 
 //MAX30105 particleSensor;
-//uint16_t ir;
+int ir;
 
 char id;
 String dato;
@@ -39,8 +40,10 @@ String dato;
 float LPG;
 float CH4;
 float CO;
+int bocinaActuatorId=0;
+int pantallaActuatorId=0;
 
-//MQSpaceData mq9(12, MQ9_PIN);
+MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
 const int DEVICE_ID = 0;
 
@@ -48,7 +51,7 @@ int test_delay = 1000; // so we don't spam the API
 boolean describe_tests = true;
 
 // Replace 0.0.0.0 by your server local IP (ipconfig [windows] or ifconfig [Linux o MacOS] gets IP assigned to your PC)
-String serverName = "http://192.168.66.209:8080/";
+String serverName = "http://192.168.66.18:8080/";
 HTTPClient http;
 
 // Replace WifiName and WifiPassword by your WiFi credentials
@@ -60,7 +63,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // Server IP, where de MQTT broker is deployed
-const char *MQTT_BROKER_ADRESS = "192.168.66.209";
+const char *MQTT_BROKER_ADRESS = IP;
 const uint16_t MQTT_PORT = 1883;
 
 // Name for this MQTT client
@@ -107,21 +110,38 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   if (top == "esp32/actuador/OLED") {
     if (content != "connected") {
       Serial.println("Mensaje recibido en OLED");
-      display.clearDisplay();
+      
       display.setTextSize(1);
       display.setTextColor(SSD1306_WHITE);
       if (id == '0') {
         display.setCursor(0, 0);
+        display.fillRect(0, 0, 128, 8, SSD1306_BLACK);
         display.print(dato);
+        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
       } else if (id == '1') {
         display.setCursor(0, 8);
+        display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
         display.print(dato);
+        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
+
       } else if (id == '2') {
         display.setCursor(0, 16);
+        display.fillRect(0, 16, 128, 8, SSD1306_BLACK);
         display.print(dato);
+        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
       } else if (id=='3') {
         display.setCursor(0,24);
+        display.fillRect(0, 24, 128, 8, SSD1306_BLACK);
         display.print(dato);
+        String yeison= serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,dato);
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
       }
 
       display.display(); // Mostrar todo al final
@@ -130,11 +150,18 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   else if (top == "esp32/actuador/BOCINA") {
     if (content != "connected") {
       if (content == "ON") {
+        Serial.println("Encendida");
         digitalWrite(12, HIGH);
+        String yeison=serializeActuatorStatusBody(bocinaActuatorId, true,0,100000,"encendida");
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
         delay(2000);
         digitalWrite(12, LOW);
       } else {
         digitalWrite(12, LOW);
+        String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,100000,"apagada");
+        pantallaActuatorId++;
+        POST_actuadores(yeison);
       }
       Serial.println("Mensaje recibido en BOCINA");
     }
@@ -167,13 +194,23 @@ void setup()
 {
   Serial.begin(9600);
   pinMode(12, OUTPUT);
-  //particleSensor.setup();
+    Serial.println("MAX30105 Basic Readings Example");
+
+  // Initialize sensor
+  //if (particleSensor.begin() == false)
+ // {
+  //  Serial.println("MAX30105 was not found. Please check wiring/power. ");
+   // while (1);
+ // }
+
+  //particleSensor.setup(); 
+  //Configure sensor. Use 6.4mA for LED drive
   // Configuración y calibración del MQ-9
- MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
+  //MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
  
   
   /*****************************  MQ Init ********************************************/ 
- MQ9.init(); 
+  /*MQ9.init(); 
   Serial.print("Calibrating please wait.");
   float calcR0 = 0;
   for(int i = 1; i<=10; i ++)
@@ -187,7 +224,7 @@ void setup()
   
   if(isinf(calcR0)) {Serial.println("Warning: Conection issue, R0 is infinite (Open circuit detected) please check your wiring and supply"); while(1);}
   if(calcR0 == 0){Serial.println("Warning: Conection issue found, R0 is zero (Analog pin shorts to ground) please check your wiring and supply"); while(1);}
-
+  */
   // Después de esto, puedes establecerlo manualmente si lo guardas
   
   Serial.println();
@@ -261,6 +298,7 @@ String serializeSensorValueBody(int idSensor, long timestamp, float value)
 
   // Add values in the document
   //
+  
   doc["sensorId"] = idSensor;
   doc["timestamp"] = timestamp;
   doc["value"] = value;
@@ -274,13 +312,14 @@ String serializeSensorValueBody(int idSensor, long timestamp, float value)
   return output;
 }
 
-String serializeActuatorStatusBody(float status, bool statusBinary, int idActuator, long timestamp)
+String serializeActuatorStatusBody(int idActuatorValue, bool statusBinary, int idActuator, long timestamp,String valor)
 {
   DynamicJsonDocument doc(2048);
 
-  doc["status"] = status;
-  doc["statusBinary"] = statusBinary;
+  doc["actuatorStateId"] = idActuatorValue;
   doc["idActuator"] = idActuator;
+  doc["statusBinary"] = statusBinary;
+  doc["valor"]= valor;
   doc["timestamp"] = timestamp;
 
   String output;
@@ -569,7 +608,7 @@ void POST_actuadores(String JSON)
   test_response(http.POST(actuator_states_body));
 
   //String sensor_value_body = serializeSensorValueBody(18, millis(), random(2000, 4000) / 100);
-  // describe("Test POST with sensor value");
+  //("Test POST with sensor value");
   //serverPath = serverName + "api/sensor_values";
   //http.begin(serverPath.c_str());
   //test_response(http.POST(sensor_value_body));
@@ -587,16 +626,17 @@ void loop()
   //GET_tests();
   //POST_tests();
   HandleMqtt();
-  leerMQ9();
+  //leerMQ9();
   //leerMAX();
-  //String valorMAX= serializeSensorValueBody(3,1000000000000,ir);
+  String valorMAX= serializeSensorValueBody(3,1000000000000,ir);
   String valorCOMQ9= serializeSensorValueBody(0,1000000000,CO);
   String valorCH4Q9= serializeSensorValueBody(1,10000000000,CH4);
   String valorLPGMQ9= serializeSensorValueBody(2,1000000000000,LPG);
-  POST_sensores(valorCOMQ9);
-  POST_sensores(valorCH4Q9);
-  POST_sensores(valorLPGMQ9);
+  //POST_sensores(valorCOMQ9);
+  //POST_sensores(valorCH4Q9);
+  //POST_sensores(valorLPGMQ9);
   //POST_sensores(valorMAX);
+
   Serial.println("Valor co");
   Serial.println(CO);
   Serial.println("Valor lpg");

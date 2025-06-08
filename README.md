@@ -2,47 +2,89 @@
 Proyectito para el hack4change
 Cada vez que queráis importar el proyecto a eclipse, importar solo la carpeta "detectorGases", el resto no son cosas para eclipse.
 
-To do list:
-- Finalizar lógica y conexiones de API REST.
-- Empezar a volcar codigo en la placa para probar sensores
-- Conectar la base de datos con el servidor de bajo nivel.
-- Montaje(prioridad baja)
-- Pruebas (**ultimo/menos importante**)
+# Detector de Gases – Proyecto IoT
 
-Contraseña BDD:
-usuario -> IoTAmaso
-contraseña -> I0t34m4s0
-
--ESTRUCTURA:
-  detectorDeGases
-  |--MainVerticle(Archivo)
-  |--entidades(Carpeta)
-  |  |--Sensor
-  |  |--SensorValue
-  |  |--Actuador
-  |  |--ActuadorState
-  |  |--Grupo
-  |  |--Dispositivo
-  |--rest(Carpeta)
-     |--RestHighServer
-     |--RestLowServer
+## 📂 Estructura del Proyecto
 
 
--EJECUCIÓN:
-El MainVerticle despliega los dos servidores Rest. El Servidor de alto nivel se conecta al broker del mqtt. El servidor de bajo nivel está preparado para gestionar datos
+# 🚀 Ejecución del Proyecto
 
--FLUJO:
-BASE DE DATOS <---> REST BAJO NIVEL <---> REST ALTO NIVEL <---> PLACA ESP32
-         Mediante Funciones       Mediante          Mediante REST API
-         y REST API               REST API               y MQTT
+- El archivo `MainVerticle` lanza ambos servidores REST.
+- El **Servidor de Alto Nivel** se conecta al broker MQTT.
+- El **Servidor de Bajo Nivel** gestiona directamente la base de datos.
+
+## 🔁 Flujo General
+
+## 📚 PARA MEMORIA
+
+## 🗄️ Funciones de Base de Datos
+
+- Imágenes de la base de datos (estructura y datos).
+- Descripción de cada tabla.
+- Verificación de funciones mediante pruebas.
+
+## 📡 Lógica MQTT en el Servidor de Alto Nivel
+
+- Subscripción a canales según grupos (`canalMQTT`).
+- Publicación de estados y datos.
+- Procesamiento de mensajes entrantes.
+
+## 🔁 Comunicación con Servidor de Bajo Nivel
+
+- Funciones de alto nivel que realizan peticiones `POST` al servidor de bajo nivel:
+  - Añadir sensores/actuadores.
+  - Actualizar valores.
+  - Consultar estado de dispositivos.
+
+## 🧪 MQTT Explorer
+
+- Capturas de canales creados.
+- Comprobación visual de:
+  - Publicaciones desde ESP32.
+  - Suscripciones desde el servidor.
+
+---
+
+## 🛠️ PlatformIO (Arduino)
+
+### 📚 Bibliotecas Usadas
+### 🔁 Lógica MQTT
+
+- Conexión al broker MQTT.
+- Suscripción a canal de control.
+- Publicación periódica de datos del sensor.
+
+### 📊 Sensores
+
+- Lectura desde sensores analógicos/digitales.
+- Conversión a JSON y envío.
+
+### 🔁 Actuadores
+
+- Cambio de estado mediante mensajes MQTT recibidos.
+
+### 🌐 REST API en Arduino
+
+- Envío de datos a servidores usando `HTTPClient`.
+- Ejemplo de `POST` JSON a `/api/sensor-values`.
+
+---
+
+## 🔐 Acceso a la Base de Datos
+
+- **Usuario**: `IoTAmaso`  
+- **Contraseña**: `I0t34m4s0`
+
+---
+
+## 📸 Imágenes Recomendadas
+
+- Estructura de la BDD.
+- Capturas de MQTT Explorer.
+- Ejecución del servidor.
+- Comunicación con ESP32.
+
+
          
 ¡Aviso! MQTT lo usamos específicamente para trabajar con los actuadores y el uso de umbrales. La esp32 se susbribe al topic del actuador y esta recibe los datos.
 
--UMBRALES(El mq2, es el único que cuanto menor el valor peor)
-SENSOR:             UMBRAL:
-MQ-2	              RS/R0 < 2.0 → Gas, humo alto
-MQ-9	              CO > 35 ppm
-MICS5524	          Voltaje > 1.5V
-PMS5003(PM2.5)	    PM2.5 > 25 µg/m³
-PMS5003(PM10)	      PM10 > 50 µg/m³
-MAX30105	          Valor > 800 (óptico)
