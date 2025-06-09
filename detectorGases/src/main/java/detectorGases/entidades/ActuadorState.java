@@ -57,6 +57,12 @@ public class ActuadorState {
 
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	@Override
+	public String toString() {
+		return "ActuadorState [actuadorStateId=" + actuadorStateId + ", actuadorId=" + actuadorId + ", state=" + state
+				+ ", valor=" + valor + ", timestamp=" + timestamp + "]";
 	} 
 	
 	

@@ -26,7 +26,7 @@ public class RestHighServer extends AbstractVerticle{
 	String act1 = "esp32/actuador/OLED";
 	String act2 = "esp32/actuador/BOCINA";
 	
-	String IP = "192.168.66.42";
+	String IP = "192.168.66.18";
 	
     Float mq9CH4Value;
     Float mq9C0Value;
@@ -135,7 +135,7 @@ public class RestHighServer extends AbstractVerticle{
             }
 
 
-            mqttClient.publish(act1, Buffer.buffer(ID),MqttQoS.AT_LEAST_ONCE, false, false);
+            mqttClient.publish(act1, Buffer.buffer(oledMessage),MqttQoS.AT_LEAST_ONCE, false, false);
 
 
             
@@ -187,6 +187,7 @@ public class RestHighServer extends AbstractVerticle{
 		try {
 			
 			ActuadorState state = gson.fromJson(routingContext.getBodyAsString(), ActuadorState.class);
+			System.out.println("Valor del actuador: " + state);
 			webClient.post(8081, IP, "/api/states")
             .sendBuffer(Buffer.buffer(gson.toJson(state)), res -> {
                 if (res.succeeded()) {
