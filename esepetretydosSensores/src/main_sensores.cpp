@@ -40,10 +40,7 @@ String dato;
 float LPG;
 float CH4;
 float CO;
-int idSensorCH4=0;
-int idSensorCO=0;
-int idSensorLPG=0;
-int idSensorMAX=0;
+int idSensorValue = 0;
 
 MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
@@ -129,6 +126,7 @@ String response;
 ///Funciones de serialización de datos->json
 String serializeSensorValueBody(int idSensor, long timestamp, float value)
 {
+
   // StaticJsonObject allocates memory on the stack, it can be
   // replaced by DynamicJsonDocument which allocates in the heap.
   //
@@ -137,30 +135,30 @@ String serializeSensorValueBody(int idSensor, long timestamp, float value)
   // Add values in the document
   //
   if(idSensor==0){
-    doc["sensorValueId"]=idSensorCH4;
+    doc["sensorValueId"]=idSensorValue;
     doc["sensorId"] = idSensor;
     doc["timestamp"] = timestamp;
     doc["value"] = value;
-    idSensorCH4++;
+    
   }else if(idSensor==1){
-    doc["sensorValueId"]=idSensorCO;
+    doc["sensorValueId"]=idSensorValue;
     doc["sensorId"] = idSensor;
     doc["timestamp"] = timestamp;
     doc["value"] = value;
-    idSensorCO++;
   }else if(idSensor==2){
-    doc["sensorValueId"]=idSensorLPG;
+    doc["sensorValueId"]=idSensorValue;
     doc["sensorId"] = idSensor;
     doc["timestamp"] = timestamp;
     doc["value"] = value;
-    idSensorLPG++;
+    
   }else if(idSensor==3){
-    doc["sensorValueId"]=idSensorMAX;
+    doc["sensorValueId"]=idSensorValue;
     doc["sensorId"] = idSensor;
     doc["timestamp"] = timestamp;
     doc["value"] = value;
-    idSensorMAX++;
+    
   }
+  idSensorValue++;
   // Generate the minified JSON and send it to the Serial port.
   //
   String output;

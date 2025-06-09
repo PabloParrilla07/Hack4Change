@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `actuador`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `actuador` (
-  `idActuador` int NOT NULL AUTO_INCREMENT,
+  `idActuador` int NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `tipo` varchar(45) DEFAULT NULL,
   `idDispositivoAct` int DEFAULT NULL,
@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `actuadorstate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `actuadorstate` (
-  `idActuadorState` int NOT NULL AUTO_INCREMENT,
+  `idActuadorState` int NOT NULL,
   `idActuador` int DEFAULT NULL,
   `estado` tinyint NOT NULL,
   `timeStamp` varchar(45) DEFAULT NULL,
@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `dispositivo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dispositivo` (
-  `idDispositivo` int NOT NULL AUTO_INCREMENT,
+  `idDispositivo` int NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `idGrupo` int DEFAULT NULL,
   PRIMARY KEY (`idDispositivo`),
@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS `grupo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `grupo` (
-  `idGrupo` int NOT NULL AUTO_INCREMENT,
+  `idGrupo` int NOT NULL,
   `canalMQTT` varchar(45) DEFAULT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idGrupo`),
@@ -132,7 +132,7 @@ DROP TABLE IF EXISTS `sensor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sensor` (
-  `idSensor` int NOT NULL AUTO_INCREMENT,
+  `idSensor` int NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `tipo` varchar(45) DEFAULT NULL,
   `idDispositivo` int DEFAULT NULL,
@@ -160,7 +160,7 @@ DROP TABLE IF EXISTS `sensorvalue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sensorvalue` (
-  `idSensorValue` int NOT NULL AUTO_INCREMENT,
+  `idSensorValue` int NOT NULL,
   `idSensor` int DEFAULT NULL,
   `value` float DEFAULT NULL,
   `timeStamp` varchar(45) DEFAULT NULL,

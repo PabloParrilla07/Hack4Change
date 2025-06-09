@@ -380,7 +380,7 @@ public class RestLowServer extends AbstractVerticle{
 												row.getInteger("idSensorValue"),
 												row.getString("idSensor"),
 												row.getString("value"),
-												row.getInteger("timestamp"))));
+												row.getInteger("timeStamp"))));
 									}
 									if (result.isEmpty()) {
 										routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
@@ -427,8 +427,8 @@ public class RestLowServer extends AbstractVerticle{
 		mySqlClient.getConnection(connection -> {
 			if (connection.succeeded()) {
 				connection.result().preparedQuery(
-					"INSERT INTO SensorValue(sensorValueId, value, timestamp) VALUES (?, ?, ?);")
-					.execute(Tuple.of(idSensorValue, value, timestamp), res -> {
+					"INSERT INTO SensorValue(idSensorValue,idSensor, value, timeStamp) VALUES (?, ?, ?, ?);")
+					.execute(Tuple.of(idSensorValue,sensorId, value, timestamp), res -> {
 						if (res.succeeded()) {
 							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
 							.setStatusCode(201).end("Valor del sensor añadido");
@@ -712,7 +712,7 @@ public class RestLowServer extends AbstractVerticle{
 												row.getInteger("idActuador"),
 												row.getBoolean("estado"),
 												row.getString("valor"),
-												row.getLong("timestamp")
+												row.getLong("timeStamp")
 												)));
 									}
 									if (result.isEmpty()) {
@@ -759,7 +759,7 @@ public class RestLowServer extends AbstractVerticle{
 		mySqlClient.getConnection(connection -> {
 			if (connection.succeeded()) {
 				connection.result().preparedQuery(
-					"INSERT INTO ActuadorState(idActuadorState, estado, valor,timestamp, idActuador) VALUES (?, ?, ?, ?, ?);")
+					"INSERT INTO ActuadorState(idActuadorState, estado, valor,timeStamp, idActuador) VALUES (?, ?, ?, ?, ?);")
 					.execute(Tuple.of(idEstado, estado, valor, timestamp, actuadorId), res -> {
 						if (res.succeeded()) {
 							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")

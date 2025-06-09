@@ -36,8 +36,7 @@ String dato;
 float LPG;
 float CH4;
 float CO;
-int bocinaActuatorId=0;
-int pantallaActuatorId=0;
+int actuatorStateID=0;
 String datoCo;
 String datoLPG;
 String datoCH4;
@@ -250,9 +249,9 @@ String serializeDeviceBody(int dispositivoId, String name, int groupId)
 {
   DynamicJsonDocument doc(2048);
 
-  doc["dispositivoID"] = dispositivoId;
+  doc["dispositivoId"] = dispositivoId;
   doc["name"] = name;
-  doc["groupId"] = groupId;
+  doc["grupoId"] = groupId;
   String output;
   serializeJson(doc, output);
   return output;
@@ -537,15 +536,15 @@ void setup()
 void loop()
 {
   HandleMqtt();
-  String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,millis(),datoCH4+" "+datoCo+" "+datoLPG+" "+datoMax);
+  String yeison=serializeActuatorStatusBody(actuatorStateID, true,0,millis(),datoCH4+" "+datoCo+" "+datoLPG+" "+datoMax);
   POST_actuadores(yeison);
-  pantallaActuatorId++;
+  actuatorStateID++;
   if(bocinaState==true){
     datoBocina="encendida";
   }else{
     datoBocina="apagada";
   }
-  String yeison2=serializeActuatorStatusBody(bocinaActuatorId,bocinaState,1,millis(),datoBocina);
+  String yeison2=serializeActuatorStatusBody(actuatorStateID,bocinaState,1,millis(),datoBocina);
   POST_actuadores(yeison2);
-  bocinaActuatorId++;
+  actuatorStateID++;
 }

@@ -73,6 +73,13 @@ public class RestHighServer extends AbstractVerticle{
 		
 		//AQUÍ RECIBE DE LA ESP32
 		Router router = Router.router(vertx);
+		vertx.createHttpServer().requestHandler(router::handle).listen(8080, result -> {
+			if (result.succeeded()) {
+				startFuture.complete();
+			} else {
+				startFuture.fail(result.cause());
+			}
+		});
 		router.route("/api/groups*").handler(BodyHandler.create());
 		router.route("/api/devices*").handler(BodyHandler.create());
 		router.route("/api/sensors*").handler(BodyHandler.create());
@@ -88,13 +95,6 @@ public class RestHighServer extends AbstractVerticle{
 		router.post("/api/states").handler(this::accionStatePost);
 
 		// Handling any server startup result
-		vertx.createHttpServer().requestHandler(router::handle).listen(8080, result -> {
-			if (result.succeeded()) {
-				startFuture.complete();
-			} else {
-				startFuture.fail(result.cause());
-			}
-		});
 
 	}
 	
