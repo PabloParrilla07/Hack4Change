@@ -1,10 +1,5 @@
 package detectorGases.Rest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.IntStream;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,10 +26,10 @@ import io.vertx.sqlclient.Tuple;
 
 public class RestLowServer extends AbstractVerticle{
 	
-	//Aquí van los métodos que usaremos para acceder/modificar la base de datos.
+	//CREACIÓN DEL CLIENTE DE MYSQL
 	MySQLPool mySqlClient;
 	
-	//MAPA PARA CADA ENTIDAD CREADA. REUNIÓN DE DATOS
+	//REUNIÓN DE DATOS FICTICIOS PARA PRUEBAS
 //	private Map<Integer, Sensor> sensors = new HashMap<Integer, Sensor>();
 //	private Map<Integer, SensorValue> values = new HashMap<Integer, SensorValue>();
 //	private Map<Integer, Actuador> actuadores = new HashMap<Integer, Actuador>();
@@ -42,8 +37,8 @@ public class RestLowServer extends AbstractVerticle{
 //	private Map<Integer, Grupo> groups = new HashMap<Integer, Grupo>();
 //	private Map<Integer, Dispositivo> devices = new HashMap<Integer, Dispositivo>();
 	
-	private Gson gson;
-
+	private Gson gson;	
+	
 	public void start(Promise<Void> startFuture) {
 		
 		//CREACIÓN DE DATOS FICTICIOS
@@ -54,10 +49,10 @@ public class RestLowServer extends AbstractVerticle{
 //		createSomeActuadors(1);
 //		createSomeActuadorStates(20);
 
-		//GSON PARA LA TRADUCCIÓN DE JSON
+		//GSON PARA LA TRADUCCIÓN DE LA FECHA
 		gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
-		//ROUTER DEL VERTX PARA HANDLERS?
+		//ROUTER DEL VERTX PARA HANDLERS
 		Router router = Router.router(vertx);
 
 		//CREACIÓN DEL SERVIDOR, ASIGNÁNDOLE EL PUERTO
@@ -79,50 +74,55 @@ public class RestLowServer extends AbstractVerticle{
 		
 		//SENSORES
 		router.route("/api/sensors*").handler(BodyHandler.create());
-		router.get("/api/sensors").handler(this::getAllSensors);//HECHA
-		router.get("/api/sensors/:id").handler(this::getSensorbyId);//HECHA
-		router.post("/api/sensors").handler(this::addOneSensor);//HECHA
-		router.delete("/api/sensors/:id").handler(this::deleteOneSensor);//HECHA
+		router.get("/api/sensors").handler(this::getAllSensors);
+		router.get("/api/sensors/:id").handler(this::getSensorbyId);
+		
+		
+		router.post("/api/sensors").handler(this::addOneSensor);
+		
+		
+		router.delete("/api/sensors/:id").handler(this::deleteOneSensor);
 		router.put("/api/sensors/:id").handler(this::putOneSensor);
 		
 		//VALORES DEL SENSOR
 		router.route("/api/values*").handler(BodyHandler.create());
-		router.get("/api/values/:id_sensor").handler(this::getValuesbySensorId);//HECHA
-		router.post("/api/values").handler(this::addOneValue);//HECHA
+		router.get("/api/values/:id_sensor").handler(this::getValuesbySensorId);
+		router.post("/api/values").handler(this::addOneValue);
 		
 		//ACTUADORES
 		router.route("/api/actuators*").handler(BodyHandler.create());
-		router.get("/api/actuators").handler(this::getAllActuators);//HECHA
-		router.get("/api/actuators/:id").handler(this::getActuatorById);//HECHA
-		router.post("/api/actuators").handler(this::addOneActuator);//HECHA
-		router.delete("/api/actuators/:id").handler(this::deleteOneActuator);//HECHA
-		router.put("/api/actuators/:id").handler(this::putOneActuator);//HECHA
+		router.get("/api/actuators").handler(this::getAllActuators);
+		router.get("/api/actuators/:id").handler(this::getActuatorById);
+		router.post("/api/actuators").handler(this::addOneActuator);
+		router.delete("/api/actuators/:id").handler(this::deleteOneActuator);
+		router.put("/api/actuators/:id").handler(this::putOneActuator);
 		
 		//ESTADO DEL ACTUADOR
 		router.route("/api/states*").handler(BodyHandler.create());
-		router.get("/api/states/:id_actuador").handler(this::getStatesbyActuatorId);//HECHA
-		router.post("/api/states").handler(this::addOneState);//HECHA
+		router.get("/api/states/:id_actuador").handler(this::getStatesbyActuatorId);
+		router.post("/api/states").handler(this::addOneState);
 		
 		//DISPOSITIVOS
 		router.route("/api/devices*").handler(BodyHandler.create());
-		router.get("/api/devices").handler(this::getAllDevices);//HECHA
-		router.get("/api/devices/:id").handler(this::getDeviceById);//HECHA
-		router.post("/api/devices").handler(this::addOneDevice);//HECHA
-		router.delete("/api/devices/:id").handler(this::deleteOneDevice);//HECHA
+		router.get("/api/devices").handler(this::getAllDevices);
+		router.get("/api/devices/:id").handler(this::getDeviceById);
+		router.post("/api/devices").handler(this::addOneDevice);
+		router.delete("/api/devices/:id").handler(this::deleteOneDevice);
 		router.put("/api/devices/:id").handler(this::putOneDevice);
 		
 		//GRUPOS
 		router.route("/api/groups*").handler(BodyHandler.create());
-		router.get("/api/groups").handler(this::getAllGroups);//HECHA
-		router.get("/api/groups/:id").handler(this::getGroupById);//HECHA
-		router.post("/api/groups").handler(this::addOneGroup);//HECHA
-		router.delete("/api/groups/:id").handler(this::deleteOneGroup);//HECHA
-		router.put("/api/groups/:id").handler(this::putOneGroup);//HECHA
+		router.get("/api/groups").handler(this::getAllGroups);
+		router.get("/api/groups/:id").handler(this::getGroupById);
+		router.post("/api/groups").handler(this::addOneGroup);
+		router.delete("/api/groups/:id").handler(this::deleteOneGroup);
+		router.put("/api/groups/:id").handler(this::putOneGroup);
 		
 	}
 
 	//SENSOR
 	
+	//OBTENER TODOS LOS SENSORES
 	private void getAllSensors(RoutingContext routingContext) {
 	    mySqlClient
 	        .preparedQuery("SELECT * FROM Sensor;")
@@ -162,49 +162,65 @@ public class RestLowServer extends AbstractVerticle{
 	        });
 	}
 	
+	//AÑADIR UN SENSOR
 	private void addOneSensor(RoutingContext routingContext) {
-		final Sensor aux = gson.fromJson(routingContext.getBodyAsString(), Sensor.class);
-		Integer idSensor = aux.getIdentificador();
-		Integer idPlaca = aux.getDeviceID();
-		String tipoSensor = aux.getTipo();
-		String nombre = aux.getNombre();
-		System.out.println(aux);
-		
-		if (idSensor == null || idPlaca == null || tipoSensor == null || nombre == null) {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-			.setStatusCode(400).end("Campos requeridos (NOT NULL):\n\tidSensor\n\tidPlaca\n\tvalor1\n\ttipoSensor\n\ttiempo");
-			System.out.println("Ninguno de estos campos puede ser null: Id, Id del dispositivo o tipo de sensor");
-			return;
-		}
+	    final Sensor aux = gson.fromJson(routingContext.getBodyAsString(), Sensor.class);
+	    Integer idSensor = aux.getIdentificador();
+	    Integer idPlaca = aux.getDeviceID();
+	    String tipoSensor = aux.getTipo();
+	    String nombre = aux.getNombre();
 
-		mySqlClient.getConnection(connection -> {
-			if (connection.succeeded()) {
-				connection.result().preparedQuery(
-						"INSERT INTO SENSOR(idSensor, nombre, tipo, idDispositivo) VALUES (?, ?, ?, ?)").execute(
-						Tuple.of(idSensor, nombre,tipoSensor, idPlaca),
-						res -> {
-							if (res.succeeded()) {
-								routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-								.setStatusCode(201).end("Sensor añadido");
-							} else {
-								routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-								.setStatusCode(500).end("Error al añadir: " + res.cause().getLocalizedMessage());
-							}
-							connection.result().close();
-						});
-				System.out.println("Sensor Añadido Correctamente: ");
-				System.out.println(aux);
-				System.out.println(" ");
-			} else {
-				routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-				.setStatusCode(500).end("Error al conectar: " + connection.cause().toString());
-				System.out.println("Error al conectar: " + connection.cause().toString());
-				System.out.println(aux);
-				System.out.println(" ");
-			}
-		});
+	    if (idSensor == null || idPlaca == null || tipoSensor == null || nombre == null) {
+	        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	            .setStatusCode(400)
+	            .end("Campos requeridos (NOT NULL): idSensor, idPlaca, tipoSensor, nombre");
+	        return;
+	    }
+
+	    mySqlClient.getConnection(connection -> {
+	        if (connection.succeeded()) {
+	            SqlConnection conn = connection.result();
+
+	            // Comprobar si ya existe
+	            conn.preparedQuery("SELECT * FROM SENSOR WHERE idSensor = ?")
+	                .execute(Tuple.of(idSensor), selectRes -> {
+	                    if (selectRes.succeeded()) {
+	                        if (selectRes.result().rowCount() > 0) {
+	                            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                .setStatusCode(409) // Conflict
+	                                .end("Ya existe un sensor con idSensor = " + idSensor);
+	                            conn.close();
+	                        } else {
+	                            conn.preparedQuery("INSERT INTO SENSOR(idSensor, nombre, tipo, idDispositivo) VALUES (?, ?, ?, ?)")
+	                                .execute(Tuple.of(idSensor, nombre, tipoSensor, idPlaca), insertRes -> {
+	                                    if (insertRes.succeeded()) {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(201)
+	                                            .end("Sensor añadido");
+	                                    } else {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(500)
+	                                            .end("Error al añadir: " + insertRes.cause().getMessage());
+	                                    }
+	                                    conn.close();
+	                                });
+	                        }
+	                    } else {
+	                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                            .setStatusCode(500)
+	                            .end("Error al comprobar existencia: " + selectRes.cause().getMessage());
+	                        conn.close();
+	                    }
+	                });
+	        } else {
+	            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                .setStatusCode(500)
+	                .end("Error al conectar con la base de datos: " + connection.cause().getMessage());
+	        }
+	    });
 	}
-
+	
+	//ELIMINAR UN SENSOR
 	private void deleteOneSensor(RoutingContext routingContext) {
 		 int id = 0;
 		    try {
@@ -247,6 +263,7 @@ public class RestLowServer extends AbstractVerticle{
 		    }
 	}
 	
+	//MODIFICAR UN SENSOR
 	private void putOneSensor(RoutingContext routingContext) {
 		 JsonObject body = routingContext.getBodyAsJson();
 		 String idParam = routingContext.pathParam("id");
@@ -290,6 +307,7 @@ public class RestLowServer extends AbstractVerticle{
 		        });
 	}
 	
+	//OBTENER UN SENSOR POR SU ID
 	private void getSensorbyId(RoutingContext routingContext){
 		int id = 0;
 		try {
@@ -342,6 +360,7 @@ public class RestLowServer extends AbstractVerticle{
 	
 	//VALORES
 	
+	//OBTENER VALORES DE UN SENSOR ESPECÍFICO
 	private void getValuesbySensorId(RoutingContext routingContext) {
 		int id = 0;
 		try {
@@ -391,6 +410,7 @@ public class RestLowServer extends AbstractVerticle{
 
 	}
 
+	//AÑADIR UN VALOR
 	private void addOneValue(RoutingContext routingContext) {
 		final SensorValue aux = gson.fromJson(routingContext.getBodyAsString(), SensorValue.class);
 		Integer idSensorValue = aux.getId();
@@ -430,6 +450,7 @@ public class RestLowServer extends AbstractVerticle{
 	
 	//ACTUADORES
 	
+	//OBTENER TODOS LOS ACTUADORES
 	private void getAllActuators(RoutingContext routingContext) {
 		mySqlClient
         .preparedQuery("SELECT * FROM Actuador;")
@@ -468,80 +489,72 @@ public class RestLowServer extends AbstractVerticle{
         });
 	}
 
-/*	private void getOneActuator(RoutingContext routingContext) {
-		mySqlClient
-        .preparedQuery("SELECT * FROM Actuador LIMIT 1;")
-        .execute(ar -> {
-            if (ar.succeeded()) {
-                RowSet<Row> resultSet = ar.result();
-                JsonArray result = new JsonArray();
-                for (Row row : resultSet) {
-                    result.add(JsonObject.mapFrom(new Actuador(
-                    		row.getInteger("actuadorId"),
-							row.getString("name"),
-							row.getString("type"),
-							row.getInteger("dispositivoId"))));
-                }
 
-                if (result.isEmpty()) {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(404)
-                        .end("No se encontraron actuadores");
-                } else {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(200)
-                        .end(result.encode());
-                }
-            } else {
-                routingContext.response()
-                    .putHeader("content-type", "application/json; charset=utf-8")
-                    .setStatusCode(500)
-                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
-            }
-        });
-	}*/
-
+	//AÑADIR UN ACTUADOR
 	private void addOneActuator(RoutingContext routingContext) {
-		final Actuador aux = gson.fromJson(routingContext.getBodyAsString(), Actuador.class);
-		Integer idActuador = aux.getId();
-		Integer idPlaca = aux.getDispositivoId();
-		String tipoActuador = aux.getType();
-		String nombre = aux.getName();
+	    final Actuador aux = gson.fromJson(routingContext.getBodyAsString(), Actuador.class);
+	    Integer idActuador = aux.getId();
+	    Integer idPlaca = aux.getDispositivoId();
+	    String tipoActuador = aux.getType();
+	    String nombre = aux.getName();
 
-		if (idActuador == null || idPlaca == null || tipoActuador == null || nombre == null) {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-			.setStatusCode(400).end("Campos requeridos (NOT NULL):\n\tidActuador\n\tidPlaca\n\ttipoActuador\n\tnombre");
-			return;
-		}
+	    if (idActuador == null || idPlaca == null || tipoActuador == null || nombre == null) {
+	        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	            .setStatusCode(400)
+	            .end("Campos requeridos (NOT NULL):\n\tidActuador\n\tidPlaca\n\ttipoActuador\n\tnombre");
+	        return;
+	    }
 
-		mySqlClient.getConnection(connection -> {
-			if (connection.succeeded()) {
-				connection.result().preparedQuery(
-					"INSERT INTO Actuador(idActuador, nombre, tipo, idDispositivoAct) VALUES (?, ?, ?, ?);")
-					.execute(Tuple.of(idActuador, nombre, tipoActuador, idPlaca), res -> {
-						if (res.succeeded()) {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(201).end("Actuador añadido");
-							System.out.println("Actuador añadido correctamente: ");
-							System.out.println(aux);
-							System.out.println(" ");
-						} else {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(500).end("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println(" ");
-						}
-						connection.result().close();
-					});
-			} else {
-				routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-				.setStatusCode(500).end("Error al conectar: " + connection.cause().toString());
-			}
-		});
+	    mySqlClient.getConnection(connection -> {
+	        if (connection.succeeded()) {
+	            SqlConnection conn = connection.result();
+
+	            // Comprobar si ya existe el actuador
+	            conn.preparedQuery("SELECT * FROM Actuador WHERE idActuador = ?")
+	                .execute(Tuple.of(idActuador), selectRes -> {
+	                    if (selectRes.succeeded()) {
+	                        if (selectRes.result().rowCount() > 0) {
+	                            // Ya existe, no insertar
+	                            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                .setStatusCode(409) // Conflict
+	                                .end("Ya existe un actuador con id = " + idActuador);
+	                            conn.close();
+	                        } else {
+	                            // No existe, insertar
+	                            conn.preparedQuery("INSERT INTO Actuador(idActuador, nombre, tipo, idDispositivoAct) VALUES (?, ?, ?, ?);")
+	                                .execute(Tuple.of(idActuador, nombre, tipoActuador, idPlaca), res -> {
+	                                    if (res.succeeded()) {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(201)
+	                                            .end("Actuador añadido");
+	                                        System.out.println("Actuador añadido correctamente:");
+	                                        System.out.println(aux);
+	                                    } else {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(500)
+	                                            .end("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                        System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                    }
+	                                    conn.close();
+	                                });
+	                        }
+	                    } else {
+	                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                            .setStatusCode(500)
+	                            .end("Error al comprobar existencia: " + selectRes.cause().getLocalizedMessage());
+	                        conn.close();
+	                    }
+	                });
+	        } else {
+	            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                .setStatusCode(500)
+	                .end("Error al conectar: " + connection.cause().toString());
+	        }
+	    });
 	}
 
+	
+	//BORRAR
 	private void deleteOneActuator(RoutingContext routingContext) {
 		 int id = 0;
 		    try {
@@ -854,79 +867,63 @@ public class RestLowServer extends AbstractVerticle{
 		}
 	}
 
-/*	private void getOneDevice(RoutingContext routingContext) {
-		mySqlClient
-        .preparedQuery("SELECT * FROM Dispositivo LIMIT 1;")
-        .execute(ar -> {
-            if (ar.succeeded()) {
-                RowSet<Row> resultSet = ar.result();
-                JsonArray result = new JsonArray();
-                for (Row row : resultSet) {
-                    result.add(JsonObject.mapFrom(new Dispositivo(
-                    		row.getInteger("dispositivoId"),
-							row.getString("name"),
-							row.getInteger("grupoId")
-							)));
-                }
-
-                if (result.isEmpty()) {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(404)
-                        .end("No se encontraron dispositivos");
-                } else {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(200)
-                        .end(result.encode());
-                }
-            } else {
-                routingContext.response()
-                    .putHeader("content-type", "application/json; charset=utf-8")
-                    .setStatusCode(500)
-                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
-            }
-        });
-	}*/
 
 	private void addOneDevice(RoutingContext routingContext) {
-		final Dispositivo aux = gson.fromJson(routingContext.getBodyAsString(), Dispositivo.class);
-		Integer idDispositivo = aux.getId();
-		String nombre = aux.getNombre();
-		Integer grupoId = aux.getIdGrupo();
+	    final Dispositivo aux = gson.fromJson(routingContext.getBodyAsString(), Dispositivo.class);
+	    Integer idDispositivo = aux.getId();
+	    String nombre = aux.getNombre();
+	    Integer grupoId = aux.getIdGrupo();
 
-		if (idDispositivo == null || nombre == null || grupoId == null) {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-			.setStatusCode(400).end("Campos requeridos (NOT NULL):\n\tidDispositivo\n\tnombre\n\tgrupoId");
-			return;
-		}
+	    if (idDispositivo == null || nombre == null || grupoId == null) {
+	        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	            .setStatusCode(400)
+	            .end("Campos requeridos (NOT NULL):\n\tidDispositivo\n\tnombre\n\tgrupoId");
+	        return;
+	    }
 
-		mySqlClient.getConnection(connection -> {
-			if (connection.succeeded()) {
-				connection.result().preparedQuery(
-					"INSERT INTO Dispositivo(idDispositivo, nombre, idGrupo) VALUES (?, ?, ?);")
-					.execute(Tuple.of(idDispositivo, nombre, grupoId), res -> {
-						if (res.succeeded()) {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(201).end("Dispositivo añadido");
-							System.out.println("Dispositivo añadido: ");
-							System.out.println(aux);
-							System.out.println(" ");
-						
-						}
-						else {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(500).end("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println(" ");
-						}
-						connection.result().close();
-					});
-			} else {
-				routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-				.setStatusCode(500).end("Error al conectar: " + connection.cause().toString());
-			}
-		});
+	    mySqlClient.getConnection(connection -> {
+	        if (connection.succeeded()) {
+	            SqlConnection conn = connection.result();
+
+	            conn.preparedQuery("SELECT * FROM Dispositivo WHERE idDispositivo = ?")
+	                .execute(Tuple.of(idDispositivo), selectRes -> {
+	                    if (selectRes.succeeded()) {
+	                        if (selectRes.result().rowCount() > 0) {
+	                            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                .setStatusCode(409)
+	                                .end("Ya existe un dispositivo con id = " + idDispositivo);
+	                            conn.close();
+	                        } else {
+	                            conn.preparedQuery("INSERT INTO Dispositivo(idDispositivo, nombre, idGrupo) VALUES (?, ?, ?);")
+	                                .execute(Tuple.of(idDispositivo, nombre, grupoId), res -> {
+	                                    if (res.succeeded()) {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(201)
+	                                            .end("Dispositivo añadido");
+	                                        System.out.println("Dispositivo añadido:");
+	                                        System.out.println(aux);
+	                                    } else {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(500)
+	                                            .end("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                        System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                    }
+	                                    conn.close();
+	                                });
+	                        }
+	                    } else {
+	                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                            .setStatusCode(500)
+	                            .end("Error al comprobar existencia: " + selectRes.cause().getLocalizedMessage());
+	                        conn.close();
+	                    }
+	                });
+	        } else {
+	            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                .setStatusCode(500)
+	                .end("Error al conectar: " + connection.cause().toString());
+	        }
+	    });
 	}
 
 	private void deleteOneDevice(RoutingContext routingContext) {
@@ -1054,41 +1051,6 @@ public class RestLowServer extends AbstractVerticle{
         });
 	}
 
-/*	private void getOneGroup(RoutingContext routingContext) {
-		mySqlClient
-        .preparedQuery("SELECT * FROM Grupo LIMIT 1;")
-        .execute(ar -> {
-            if (ar.succeeded()) {
-                RowSet<Row> resultSet = ar.result();
-                JsonArray result = new JsonArray();
-                for (Row row : resultSet) {
-                    result.add(JsonObject.mapFrom(new Grupo(
-                    		row.getInteger("grupoId"),
-							row.getString("canalMQTT"),
-							row.getString("name")
-							)));
-                }
-
-                if (result.isEmpty()) {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(404)
-                        .end("No se encontraron grupos");
-                } else {
-                    routingContext.response()
-                        .putHeader("content-type", "application/json; charset=utf-8")
-                        .setStatusCode(200)
-                        .end(result.encode());
-                }
-            } else {
-                routingContext.response()
-                    .putHeader("content-type", "application/json; charset=utf-8")
-                    .setStatusCode(500)
-                    .end("Error al ejecutar la consulta: " + ar.cause().getMessage());
-            }
-        });
-	}*/
-
 	private void getGroupById(RoutingContext routingContext) {
 		int id = 0;
 		try {
@@ -1143,43 +1105,57 @@ public class RestLowServer extends AbstractVerticle{
 	}
 	
 	private void addOneGroup(RoutingContext routingContext) {
-		final Grupo aux = gson.fromJson(routingContext.getBodyAsString(), Grupo.class);
-		Integer idGrupo = aux.getId();
-		String nombre = aux.getNombre();
-		String canalMQTT = aux.getCanal_mqtt();
+	    final Grupo aux = gson.fromJson(routingContext.getBodyAsString(), Grupo.class);
+	    Integer idGrupo = aux.getId();
+	    String nombre = aux.getNombre();
+	    String canalMQTT = aux.getCanal_mqtt();
 
-		if (idGrupo == null || nombre == null || canalMQTT == null) {
-			routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-			.setStatusCode(400).end("Campos requeridos (NOT NULL):\n\tidGrupo\n\tnombre\n\tcanalMQTT");
-			return;
-		}
+	    if (idGrupo == null || nombre == null || canalMQTT == null) {
+	        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	            .setStatusCode(400).end("Campos requeridos (NOT NULL):\n\tidGrupo\n\tnombre\n\tcanalMQTT");
+	        return;
+	    }
 
-		mySqlClient.getConnection(connection -> {
-			if (connection.succeeded()) {
-				connection.result().preparedQuery(
-					"INSERT INTO Grupo(idGrupo, canalMQTT, nombre) VALUES (?, ?, ?);")
-					.execute(Tuple.of(idGrupo, nombre, canalMQTT), res -> {
-						if (res.succeeded()) {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(201).end("Grupo añadido");
-							System.out.println("Grupo añadido correctamente: ");
-							System.out.println(aux);
-							System.out.println(" ");
-							
-						} else {
-							routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-							.setStatusCode(500).end("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
-							System.out.println(aux);
-							System.out.println(" ");
-						}
-						connection.result().close();
-					});
-			} else {
-				routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
-				.setStatusCode(500).end("Error al conectar: " + connection.cause().toString());
-			}
-		});
+	    mySqlClient.getConnection(connection -> {
+	        if (connection.succeeded()) {
+	            SqlConnection conn = connection.result();
+
+
+	            conn.preparedQuery("SELECT * FROM Grupo WHERE idGrupo = ?")
+	                .execute(Tuple.of(idGrupo), selectRes -> {
+	                    if (selectRes.succeeded()) {
+	                        if (selectRes.result().rowCount() > 0) {
+	                            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                .setStatusCode(409).end("Ya existe un grupo con id = " + idGrupo);
+	                            conn.close();
+	                        } else {
+	                            conn.preparedQuery("INSERT INTO Grupo(idGrupo, canalMQTT, nombre) VALUES (?, ?, ?);")
+	                                .execute(Tuple.of(idGrupo, canalMQTT, nombre), res -> {
+	                                    if (res.succeeded()) {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(201).end("Grupo añadido");
+	                                        System.out.println("Grupo añadido correctamente: ");
+	                                        System.out.println(aux);
+	                                    } else {
+	                                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                                            .setStatusCode(500).end("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                        System.out.println("Error al añadir: " + res.cause().getLocalizedMessage());
+	                                        System.out.println(aux);
+	                                    }
+	                                    conn.close();
+	                                });
+	                        }
+	                    } else {
+	                        routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                            .setStatusCode(500).end("Error al comprobar existencia: " + selectRes.cause().getLocalizedMessage());
+	                        conn.close();
+	                    }
+	                });
+	        } else {
+	            routingContext.response().putHeader("content-type", "application/json; charset=utf-8")
+	                .setStatusCode(500).end("Error al conectar: " + connection.cause().toString());
+	        }
+	    });
 	}
 
 	private void deleteOneGroup(RoutingContext routingContext) {
