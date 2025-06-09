@@ -131,33 +131,12 @@ String serializeSensorValueBody(int idSensor, long timestamp, float value)
   // replaced by DynamicJsonDocument which allocates in the heap.
   //
   DynamicJsonDocument doc(2048);
-
-  // Add values in the document
-  //
-  if(idSensor==0){
     doc["sensorValueId"]=idSensorValue;
     doc["sensorId"] = idSensor;
     doc["timestamp"] = timestamp;
     doc["value"] = value;
     
-  }else if(idSensor==1){
-    doc["sensorValueId"]=idSensorValue;
-    doc["sensorId"] = idSensor;
-    doc["timestamp"] = timestamp;
-    doc["value"] = value;
-  }else if(idSensor==2){
-    doc["sensorValueId"]=idSensorValue;
-    doc["sensorId"] = idSensor;
-    doc["timestamp"] = timestamp;
-    doc["value"] = value;
-    
-  }else if(idSensor==3){
-    doc["sensorValueId"]=idSensorValue;
-    doc["sensorId"] = idSensor;
-    doc["timestamp"] = timestamp;
-    doc["value"] = value;
-    
-  }
+  
   idSensorValue++;
   // Generate the minified JSON and send it to the Serial port.
   //
