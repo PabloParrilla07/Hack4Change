@@ -2,7 +2,11 @@ package detectorGases.Rest;
 
 import com.google.gson.Gson;
 
+import detectorGases.entidades.Actuador;
 import detectorGases.entidades.ActuadorState;
+import detectorGases.entidades.Dispositivo;
+import detectorGases.entidades.Grupo;
+import detectorGases.entidades.Sensor;
 import detectorGases.entidades.SensorValue;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.core.AbstractVerticle;
@@ -65,12 +69,21 @@ public class RestHighServer extends AbstractVerticle{
 		});
 		
 		
+		//ESTOS ENDPOINTS LOS HAREMOS PARA REENVIAR LA INFORMACIÓN AL SERVIDOR BAJO NIVEL
+		
 		//AQUÍ RECIBE DE LA ESP32
 		Router router = Router.router(vertx);
+		router.route("/api/groups*").handler(BodyHandler.create());
+		router.route("/api/devices*").handler(BodyHandler.create());
+		router.route("/api/sensors*").handler(BodyHandler.create());
+		router.route("/api/actuators*").handler(BodyHandler.create());
 		router.route("/api/values*").handler(BodyHandler.create());
 		router.route("/api/states*").handler(BodyHandler.create());
-		//Qué significa esta línea?
-		//Cuando la esp32 haga un POST, realizará la función que se esta declarando
+		
+		router.post("/api/groups").handler(this::accionGroupPost);
+		router.post("/api/devices").handler(this::accionDevicePost);
+		router.post("/api/sensors").handler(this::accionSensorPost);
+		router.post("/api/actuators").handler(this::accionActuatorPost);
 		router.post("/api/values").handler(this::accionValuePost);
 		router.post("/api/states").handler(this::accionStatePost);
 
@@ -183,6 +196,78 @@ public class RestHighServer extends AbstractVerticle{
         }
     }
 
+	private void accionGroupPost(RoutingContext routingContext) {
+		try {
+			
+			Grupo group = gson.fromJson(routingContext.getBodyAsString(), Grupo.class);
+			System.out.println("Grupo: " + group);
+			webClient.post(8081, IP, "/api/groups")
+            .sendBuffer(Buffer.buffer(gson.toJson(group)), res -> {
+                if (res.succeeded()) {
+                	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
+                } else {
+                	routingContext.response().setStatusCode(500).end("Error reenviando a servidor bajo nivel");
+                }
+            });
+		} catch (Exception e) {
+        	routingContext.response().setStatusCode(400).end("JSON malformado");
+        }
+	}
+	
+	private void accionDevicePost(RoutingContext routingContext) {
+		try {
+			
+			Dispositivo device = gson.fromJson(routingContext.getBodyAsString(), Dispositivo.class);
+			System.out.println("Dispositivo: " + device);
+			webClient.post(8081, IP, "/api/devices")
+            .sendBuffer(Buffer.buffer(gson.toJson(device)), res -> {
+                if (res.succeeded()) {
+                	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
+                } else {
+                	routingContext.response().setStatusCode(500).end("Error reenviando a servidor bajo nivel");
+                }
+            });
+		} catch (Exception e) {
+        	routingContext.response().setStatusCode(400).end("JSON malformado");
+        }
+	}
+	
+	private void accionSensorPost(RoutingContext routingContext) {
+		try {
+			
+			Sensor sensor = gson.fromJson(routingContext.getBodyAsString(), Sensor.class);
+			System.out.println("Sensor: " + sensor);
+			webClient.post(8081, IP, "/api/sensors")
+            .sendBuffer(Buffer.buffer(gson.toJson(sensor)), res -> {
+                if (res.succeeded()) {
+                	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
+                } else {
+                	routingContext.response().setStatusCode(500).end("Error reenviando a servidor bajo nivel");
+                }
+            });
+		} catch (Exception e) {
+        	routingContext.response().setStatusCode(400).end("JSON malformado");
+        }
+	}
+	
+	private void accionActuatorPost(RoutingContext routingContext) {
+		try {
+			
+			Actuador actuator = gson.fromJson(routingContext.getBodyAsString(), Actuador.class);
+			System.out.println("Actuador: " + actuator);
+			webClient.post(8081, IP, "/api/actuators")
+            .sendBuffer(Buffer.buffer(gson.toJson(actuator)), res -> {
+                if (res.succeeded()) {
+                	routingContext.response().setStatusCode(201).end("Dato recibido y reenviado");
+                } else {
+                	routingContext.response().setStatusCode(500).end("Error reenviando a servidor bajo nivel");
+                }
+            });
+		} catch (Exception e) {
+        	routingContext.response().setStatusCode(400).end("JSON malformado");
+        }
+	}
+	
 	private void accionStatePost(RoutingContext routingContext) {
 		try {
 			
