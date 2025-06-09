@@ -8,8 +8,6 @@
 #include <Ethernet.h>
 #include <MQUnifiedsensor.h>
 #include "MAX30105.h"
-#include <MQUnifiedsensor.h>
-
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -18,7 +16,9 @@
 #define IP "192.168.66.18"
 
 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+#include <MQUnifiedsensor.h>
 /************************Hardware Related Macros************************************/
 #define         Board                   ("Arduino UNO")
 #define         Pin                     (35)  //Analog input 4 of your arduino
@@ -30,11 +30,8 @@
 /*****************************Globals***********************************************/
 //Declare Sensor
 MQUnifiedsensor MQ9(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 MAX30105 particleSensor;
-MQSpaceData mq9(12, MQ9_PIN);
-
 int ir;
 
 char id;
@@ -48,6 +45,7 @@ int idSensorCO=0;
 int idSensorLPG=0;
 int idSensorMAX=0;
 
+MQSpaceData mq9(12, MQ9_PIN);
 // Replace 0 by ID of this current device
 const int DEVICE_ID = 0;
 
@@ -91,64 +89,7 @@ void leerMAX()
   delay(100);
 }
 
-// Setup
-void setup()
-{
-  Serial.begin(9600);
-  pinMode(12, OUTPUT);
-  Serial.println("MAX30105 Basic Readings Example");
 
-   //Initialize sensor
-  if (particleSensor.begin() == false)
-  {
-    Serial.println("MAX30105 was not found. Please check wiring/power. ");
-    while (1);
-  }
-
-  particleSensor.setup(); 
-  //Configure sensor. Use 6.4mA for LED drive
-  //onfiguración y calibración del MQ-9
-  MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
- 
-  
-  /*****************************  MQ Init ********************************************/ 
-  ///configuración del MQ-9 usando librería MQUnifiedsensor
-  MQ9.init(); 
-  Serial.print("Calibrating please wait.");
-  float calcR0 = 0;
-  for(int i = 1; i<=10; i ++)
-  {
-    MQ9.update(); // Update data, the arduino will read the voltage from the analog pin
-    calcR0 += MQ9.calibrate(RatioMQ9CleanAir);
-    Serial.print(".");
-  }
-  MQ9.setR0(calcR0/10);
-  Serial.println("  done!.");
-  
-  if(isinf(calcR0)) {Serial.println("Warning: Conection issue, R0 is infinite (Open circuit detected) please check your wiring and supply"); while(1);}
-  if(calcR0 == 0){Serial.println("Warning: Conection issue found, R0 is zero (Analog pin shorts to ground) please check your wiring and supply"); while(1);}
-  
-  ///Conexión a WiFi  
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(STASSID);
-  /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
-     would try to act as both a client and an access-point and could cause
-     network-issues with your other WiFi-devices on your WiFi-network. */
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(STASSID, STAPSK);
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.println("Setup!");
-}
 
 // conecta o reconecta al MQTT
 // consigue conectar -> suscribe a topic y publica un mensaje
@@ -242,15 +183,37 @@ String serializeActuatorStatusBody(float status, bool statusBinary, int idActuat
   serializeJson(doc, output);
   return output;
 }
-
-String serializeDeviceBody(String deviceSerialId, String name, String mqttChannel, int idGroup)
+String serializeSensorBody(int sensorId, String name, String type, int deviceId)
 {
   DynamicJsonDocument doc(2048);
 
-  doc["deviceSerialId"] = deviceSerialId;
+  doc["sensorId"] = sensorId;
   doc["name"] = name;
-  doc["mqttChannel"] = mqttChannel;
-  doc["idGroup"] = idGroup;
+  doc["type"] = type;
+  doc["deviceId"] = deviceId;
+
+  String output;
+  serializeJson(doc, output);
+  return output;
+}
+String serializeDeviceBody(int dispositivoId, String name, int groupId)
+{
+  DynamicJsonDocument doc(2048);
+
+  doc["dispositivoID"] = dispositivoId;
+  doc["name"] = name;
+  doc["groupId"] = groupId;
+  String output;
+  serializeJson(doc, output);
+  return output;
+}
+String serializeGroup(int grupoId, String mqttChannel, String name)
+{
+  DynamicJsonDocument doc(2048);
+
+  doc["grupoId"] = grupoId;
+  doc["canal_mqtt"] = mqttChannel;
+  doc["name"] = name;
 
   String output;
   serializeJson(doc, output);
@@ -421,6 +384,25 @@ void describe(char *description)
   if (describe_tests)
     Serial.println(description);
 }
+void POST_sensor(String JSON)
+{
+  String actuator_states_body = JSON;
+  describe((char*)"Post estado sensor");
+  String serverPath = serverName + "/api/sensors";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(actuator_states_body));
+  http.end();
+  delay(1000);
+}void POST_grupos(String JSON)
+{
+  String grupo = JSON;
+  describe((char*)"Post grupo");
+  String serverPath = serverName + "/api/groups";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(grupo));
+  http.end();
+  delay(1000);
+}
 void POST_sensores(String JSON)
 {
   String actuator_states_body = JSON;
@@ -435,11 +417,91 @@ void POST_actuadores(String JSON)
 {
   String actuator_states_body = JSON;
   describe((char*)"Post estado actuadores");
-  String serverPath = serverName + "/api/state";
+  String serverPath = serverName + "/api/states";
   http.begin(serverPath.c_str());
   test_response(http.POST(actuator_states_body));
 }
+void POST_device(String JSON)
+{
+  String device = JSON;
+  describe((char*)"Post device");
+  String serverPath = serverName + "/api/devices";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(device));
+  http.end();
+  delay(1000);
+}
+// Setup
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(12, OUTPUT);
+  Serial.println("MAX30105 Basic Readings Example");
+  
+  
+   //Initialize sensor
+  if (particleSensor.begin() == false)
+  {
+    Serial.println("MAX30105 was not found. Please check wiring/power. ");
+    while (1);
+  }
 
+  particleSensor.setup(); 
+  //Configure sensor. Use 6.4mA for LED drive
+  //onfiguración y calibración del MQ-9
+  MQ9.setRegressionMethod(1); //_PPM =  a*ratio^b
+ 
+  
+  /*****************************  MQ Init ********************************************/ 
+  ///configuración del MQ-9 usando librería MQUnifiedsensor
+  MQ9.init(); 
+  Serial.print("Calibrating please wait.");
+  float calcR0 = 0;
+  for(int i = 1; i<=10; i ++)
+  {
+    MQ9.update(); // Update data, the arduino will read the voltage from the analog pin
+    calcR0 += MQ9.calibrate(RatioMQ9CleanAir);
+    Serial.print(".");
+  }
+  MQ9.setR0(calcR0/10);
+  Serial.println("  done!.");
+  
+  if(isinf(calcR0)) {Serial.println("Warning: Conection issue, R0 is infinite (Open circuit detected) please check your wiring and supply"); while(1);}
+  if(calcR0 == 0){Serial.println("Warning: Conection issue found, R0 is zero (Analog pin shorts to ground) please check your wiring and supply"); while(1);}
+  
+  ///Conexión a WiFi  
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(STASSID);
+  /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
+     would try to act as both a client and an access-point and could cause
+     network-issues with your other WiFi-devices on your WiFi-network. */
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STASSID, STAPSK);
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.println("Setup!");
+  String jsonGrupo1= serializeGroup(0,"esp32/sensor/#","sensores");
+  String jsonDispositivo=serializeDeviceBody(0,"sensores",0);
+  String jsonSensor1=serializeSensorBody(0,"CH4","MQ-9",0);
+  String jsonSensor2=serializeSensorBody(1,"CO","MQ-9",0);
+  String jsonSensor3=serializeSensorBody(2,"LPG","MQ-9",0);
+  String jsonSensor4=serializeSensorBody(3,"MAX30105","MAX30105",0);
+  POST_grupos(jsonGrupo1);
+  POST_device(jsonDispositivo);
+  POST_sensor(jsonSensor1);
+  POST_sensor(jsonSensor2);
+  POST_sensor(jsonSensor3);
+  POST_sensor(jsonSensor4);  
+}
 // Run the tests!
 void loop()
 {
