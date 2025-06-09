@@ -38,8 +38,11 @@ float CH4;
 float CO;
 int bocinaActuatorId=0;
 int pantallaActuatorId=0;
-String dato2="";
-String dato3="";
+String datoCo;
+String datoLPG;
+String datoCH4;
+String datoMax;
+String datoBocina="Apagada";
 boolean bocinaState = false;
 
 MQSpaceData mq9(12, MQ9_PIN);
@@ -76,7 +79,6 @@ void initOLED() {
     Serial.println(F("Fallo en OLED"));
     while (true);
   }
-  Serial.println("Fallo en OLED");
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
@@ -85,7 +87,6 @@ void initOLED() {
   display.display();
   delay(3000);
   display.clearDisplay();
-  delay(2000);
 
 }
 
@@ -95,8 +96,6 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   Serial.print(topic);
   String top = String(topic);
   Serial.print(": ");
-  dato2="";
-  dato3="";
   String content = "";
   for (size_t i = 0; i < length; i++)
   {
@@ -109,6 +108,7 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
   // Si el topic es el de OLED, muestra el mensaje en la pantalla OLED
   if (top == "esp32/actuador/OLED") {
     if (content != "connected") {
+        
       Serial.println("Mensaje recibido en OLED");
       
       display.setTextSize(1);
@@ -116,40 +116,42 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
       if (id == '0') {
         display.setCursor(0, 0);
         display.fillRect(0, 0, 128, 8, SSD1306_BLACK);
+        datoCH4 = dato;
         display.print(dato);
-        dato2=dato2+dato;
+        
       } else if (id == '1') {
         display.setCursor(0, 8);
         display.fillRect(0, 8, 128, 8, SSD1306_BLACK);
+        datoCo = dato;
         display.print(dato);
-        dato2=dato2+dato;
+        
       } else if (id == '2') {
         display.setCursor(0, 16);
         display.fillRect(0, 16, 128, 8, SSD1306_BLACK);
+        datoLPG = dato;
         display.print(dato);
-        dato2=dato2+dato;
+        
       } else if (id=='3') {
         display.setCursor(0,24);
         display.fillRect(0, 24, 128, 8, SSD1306_BLACK);
+        datoMax= dato;
         display.print(dato);
-        dato2=dato2+dato;
+        
       }
-
-      display.display(); // Mostrar todo al final
+      display.display();
     }
+  
   }
   else if (top == "esp32/actuador/BOCINA") {
     if (content != "connected") {
       if (content == "ON") {
         Serial.println("Encendida");
-        dato3="Encendida";
         bocinaState = true;
         digitalWrite(12, HIGH);
         delay(2000);
         digitalWrite(12, LOW);
       } else {
         digitalWrite(12, LOW);
-        dato3="Apagada";
         bocinaState = false;
         
       }
@@ -167,38 +169,7 @@ void InitMqtt()
 }
 
 // Setup
-void setup()
-{
-  Serial.begin(9600);
-  pinMode(12, OUTPUT);
-    Serial.println("MAX30105 Basic Readings Example");
 
-  // Después de esto, puedes establecerlo manualmente si lo guardas
-  
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(STASSID);
-  initOLED();
-  /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
-     would try to act as both a client and an access-point and could cause
-     network-issues with your other WiFi-devices on your WiFi-network. */
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(STASSID, STAPSK);
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-  }
-
-  InitMqtt();
-
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.println("Setup!");
-}
 
 // conecta o reconecta al MQTT
 // consigue conectar -> suscribe a topic y publica un mensaje
@@ -275,20 +246,42 @@ String serializeActuatorStatusBody(int idActuatorValue, bool statusBinary, int i
   serializeJson(doc, output);
   return output;
 }
-String serializeDeviceBody(String deviceSerialId, String name, String mqttChannel, int idGroup)
+String serializeDeviceBody(int dispositivoId, String name, int groupId)
 {
   DynamicJsonDocument doc(2048);
 
-  doc["deviceSerialId"] = deviceSerialId;
+  doc["dispositivoID"] = dispositivoId;
   doc["name"] = name;
-  doc["mqttChannel"] = mqttChannel;
-  doc["idGroup"] = idGroup;
+  doc["groupId"] = groupId;
+  String output;
+  serializeJson(doc, output);
+  return output;
+}
+String serializeGroup(int grupoId, String mqttChannel, String name)
+{
+  DynamicJsonDocument doc(2048);
+
+  doc["grupoId"] = grupoId;
+  doc["canal_mqtt"] = mqttChannel;
+  doc["name"] = name;
 
   String output;
   serializeJson(doc, output);
   return output;
 }
+String serializeActuatorBody(int actuadorId, String name, String type, int dispositivoId)
+{
+  DynamicJsonDocument doc(2048);
 
+  doc["actuadorId"] = actuadorId;
+  doc["name"] = name;
+  doc["type"] = type;
+  doc["dispositivoId"] = dispositivoId;
+
+  String output;
+  serializeJson(doc, output);
+  return output;
+}
 void deserializeActuatorStatusBody(String responseJson)
 {
   if (responseJson != "")
@@ -469,17 +462,90 @@ void POST_actuadores(String JSON)
   http.begin(serverPath.c_str());
   test_response(http.POST(actuator_states_body));
 }
+void POST_grupos(String JSON)
+{
+  String grupo = JSON;
+  describe((char*)"Post grupo");
+  String serverPath = serverName + "/api/groups";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(grupo));
+  http.end();
+  delay(1000);
+}
+void POST_actuador(String JSON)
+{
+  String actuator_states_body = JSON;
+  describe((char*)"Post estado actuadores");
+  String serverPath = serverName + "/api/actuators";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(actuator_states_body));
+}
+void POST_device(String JSON)
+{
+  String device = JSON;
+  describe((char*)"Post device");
+  String serverPath = serverName + "/api/devices";
+  http.begin(serverPath.c_str());
+  test_response(http.POST(device));
+  http.end();
+  delay(1000);
+}
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(12, OUTPUT);
+    Serial.println("MAX30105 Basic Readings Example");
 
+  // Después de esto, puedes establecerlo manualmente si lo guardas
+  
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(STASSID);
+  initOLED();
+  /* Explicitly set the ESP32 to be a WiFi-client, otherwise, it by default,
+     would try to act as both a client and an access-point and could cause
+     network-issues with your other WiFi-devices on your WiFi-network. */
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STASSID, STAPSK);
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+
+  InitMqtt();
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.println("Setup!");
+  String jsonGrupo1= serializeGroup(1,"esp32/actuador/#","actuador");
+  String jsonDispositivo2=serializeDeviceBody(1,"actuadores",1);
+  String jsonActuador1=serializeActuatorBody(0,"OLED","OLED",1);
+  String jsonActuador2=serializeActuatorBody(1,"BOCINA","BOCINA",1);
+  
+  POST_grupos(jsonGrupo1);
+  POST_device(jsonDispositivo2);
+  POST_actuador(jsonActuador1);
+  POST_actuador(jsonActuador2);
+  
+  
+}
 // Run the tests!
 void loop()
 {
   HandleMqtt();
- 
-  String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,millis(),dato2);
+  String yeison=serializeActuatorStatusBody(pantallaActuatorId, true,0,millis(),datoCH4+" "+datoCo+" "+datoLPG+" "+datoMax);
   POST_actuadores(yeison);
   pantallaActuatorId++;
-  String yeison2=serializeActuatorStatusBody(bocinaActuatorId,bocinaState,1,millis(),dato3);
+  if(bocinaState==true){
+    datoBocina="encendida";
+  }else{
+    datoBocina="apagada";
+  }
+  String yeison2=serializeActuatorStatusBody(bocinaActuatorId,bocinaState,1,millis(),datoBocina);
   POST_actuadores(yeison2);
   bocinaActuatorId++;
-
 }
