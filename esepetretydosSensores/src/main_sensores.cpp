@@ -387,7 +387,7 @@ void describe(char *description)
 void POST_sensor(String JSON)
 {
   String actuator_states_body = JSON;
-  describe((char*)"Post estado sensor");
+  describe((char*)"Post sensor");
   String serverPath = serverName + "/api/sensors";
   http.begin(serverPath.c_str());
   test_response(http.POST(actuator_states_body));
