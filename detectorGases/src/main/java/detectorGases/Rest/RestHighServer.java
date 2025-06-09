@@ -30,7 +30,7 @@ public class RestHighServer extends AbstractVerticle{
 	String act1 = "esp32/actuador/OLED";
 	String act2 = "esp32/actuador/BOCINA";
 	
-	String IP = "192.168.66.18";
+	String IP = "192.168.1.21";
 	
     Float mq9CH4Value;
     Float mq9C0Value;
@@ -115,20 +115,6 @@ public class RestHighServer extends AbstractVerticle{
             String oledMessage = "";
             
             ID = value.getIdSensor();
-            
-            //Sensores realmente
-             
-            //IDEAS PARA LA OLED:
-            	//HAGO UNA SOLA LÍNEA EN ECLIPSE, DIVIDO EN VISUAL STUDIO
-            	//HAGO VARIAS LÍNEAS EN ECLIPSE, EN VISUAL STUDIO NO SE COMO SE HARÍA
-            	//CREO MÁS TOPICS PARA SUSCRIBIRSE Y COMPROBAR LA ID DEL SENSOR
-            
-            // USO DE LA LÓGICA
-            //MQ2 --> < 2 
-            //MQ9 --> >35
-            //MICS --> >1.5V
-            //PMS -->  >25 o 50 depende de cual usemos
-            //MAX -->  >800
             
             if (ID.equals(mq9CH4)) {
                 mq9CH4Value = value.getValue();

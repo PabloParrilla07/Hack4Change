@@ -76,11 +76,7 @@ public class RestLowServer extends AbstractVerticle{
 		router.route("/api/sensors*").handler(BodyHandler.create());
 		router.get("/api/sensors").handler(this::getAllSensors);
 		router.get("/api/sensors/:id").handler(this::getSensorbyId);
-		
-		
 		router.post("/api/sensors").handler(this::addOneSensor);
-		
-		
 		router.delete("/api/sensors/:id").handler(this::deleteOneSensor);
 		router.put("/api/sensors/:id").handler(this::putOneSensor);
 		
