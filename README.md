@@ -14,3 +14,5 @@ Cada vez que queráis importar el proyecto a eclipse, importar solo la carpeta "
 -**Versión SQL**: 'InserciónManual.sql'
 -**Versión Platformio**: Lo hace la placa
 
+## 🔐 Acceso al vídeo del proyecto
+https://drive.google.com/file/d/1JduVfTWhR0AVGnJ62Soq1jNmjH0J1cmb/view?usp=drive_link
